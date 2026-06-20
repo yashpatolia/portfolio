@@ -8,6 +8,8 @@ if [[ -z "${VPS_HOST:-}" || -z "${VPS_USER:-}" || -z "${VPS_PATH:-}" ]]; then
 fi
 
 VPS_PORT="${VPS_PORT:-22}"
+APP_PORT="${APP_PORT:-3000}"
+PM2_NAME="${PM2_NAME:-portfolio}"
 DIST_DIR="${DIST_DIR:-dist}"
 SSH_TARGET="${VPS_USER}@${VPS_HOST}"
 
@@ -22,3 +24,8 @@ rsync -az --delete \
   -e "ssh -p $VPS_PORT -o StrictHostKeyChecking=accept-new" \
   "$DIST_DIR"/ \
   "$SSH_TARGET:$VPS_PATH/"
+
+ssh -p "$VPS_PORT" -o StrictHostKeyChecking=accept-new "$SSH_TARGET" "\
+  pm2 delete '$PM2_NAME' >/dev/null 2>&1 || true && \
+  pm2 serve '$VPS_PATH' '$APP_PORT' --name '$PM2_NAME' --spa --time\
+"
