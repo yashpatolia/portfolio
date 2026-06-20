@@ -8,6 +8,7 @@ const navLinks = [
   { label: 'Education', href: '#education' },
   { label: 'Contact', href: '#contact' },
 ]
+const resumeHref = `${import.meta.env.BASE_URL}resume.pdf`
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -45,8 +46,9 @@ export default function Navbar() {
           ))}
         </ul>
         <a
-          href="/portfolio/resume.pdf"
-          download
+          href={resumeHref}
+          target="_blank"
+          rel="noreferrer"
           className="hidden md:inline-flex items-center gap-2 px-4 py-1.5 border border-surface-3 bg-surface text-text-dim font-mono text-xs rounded-lg hover:border-accent hover:text-accent hover:bg-accent/5 transition-all duration-200"
         >
           Resume ↗

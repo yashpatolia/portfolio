@@ -1,41 +1,26 @@
 import { motion } from 'framer-motion'
 import { skillGroups } from '../data/skills'
 
-const colorMap = {
-  blue: {
-    label: 'text-accent',
-    pill: 'border-accent/25 text-text-dim bg-accent/5 hover:border-accent/60 hover:text-accent hover:bg-accent/10',
-    dot: 'bg-accent',
-  },
-  violet: {
-    label: 'text-violet',
-    pill: 'border-violet/25 text-text-dim bg-violet/5 hover:border-violet/60 hover:text-violet hover:bg-violet/10',
-    dot: 'bg-violet',
-  },
-  emerald: {
-    label: 'text-emerald',
-    pill: 'border-emerald/25 text-text-dim bg-emerald/5 hover:border-emerald/60 hover:text-emerald hover:bg-emerald/10',
-    dot: 'bg-emerald',
-  },
-  amber: {
-    label: 'text-amber',
-    pill: 'border-amber/25 text-text-dim bg-amber/5 hover:border-amber/60 hover:text-amber hover:bg-amber/10',
-    dot: 'bg-amber',
-  },
+const categoryAccent: Record<string, string> = {
+  blue: 'text-accent border-accent/30',
+  violet: 'text-violet border-violet/30',
+  emerald: 'text-emerald border-emerald/30',
+  amber: 'text-amber border-amber/30',
 }
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.035 } },
+  show: { transition: { staggerChildren: 0.04 } },
 }
-const pill = {
-  hidden: { opacity: 0, scale: 0.8, y: 6 },
-  show: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring', stiffness: 320, damping: 22 } },
+
+const item = {
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 20 } },
 }
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-28 px-6 max-w-4xl mx-auto">
+    <section id="skills" className="py-28 px-6 max-w-5xl mx-auto">
       <div className="section-divider mb-16" />
 
       <motion.div
@@ -48,42 +33,57 @@ export default function Skills() {
         <p className="font-mono text-emerald text-xs tracking-[0.2em] mb-3 uppercase">
           04 / Skills
         </p>
-        <h2 className="text-4xl font-bold text-gradient-blue">What I Use</h2>
+        <h2 className="text-4xl font-bold text-text">What I Use</h2>
       </motion.div>
 
-      <div className="space-y-12">
+      <div className="grid md:grid-cols-2 gap-5">
         {skillGroups.map((group) => {
-          const colors = colorMap[group.color]
+          const accentCls = categoryAccent[group.color]
+
           return (
             <motion.div
               key={group.label}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.45 }}
+              className="rounded-xl border border-surface-2/70 bg-surface shadow-card overflow-hidden"
             >
-              <div className="flex items-center gap-3 mb-4">
-                <span className={`w-2 h-2 rounded-full ${colors.dot} glow-dot`} />
-                <p className={`font-mono text-xs tracking-[0.15em] uppercase font-medium ${colors.label}`}>
+              {/* Card header */}
+              <div className={`px-5 py-3.5 border-b border-surface-2/60 flex items-center gap-2`}>
+                <span className={`font-mono text-xs tracking-[0.15em] uppercase font-medium ${accentCls.split(' ')[0]}`}>
                   {group.label}
-                </p>
+                </span>
               </div>
+
+              {/* Skills grid */}
               <motion.div
                 variants={container}
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: true }}
-                className="flex flex-wrap gap-2"
+                className="p-4 grid grid-cols-2 sm:grid-cols-3 gap-2"
               >
-                {group.skills.map((skill) => (
-                  <motion.span
-                    key={skill}
-                    variants={pill}
-                    className={`font-mono text-sm px-3.5 py-1.5 rounded-lg border transition-all cursor-default ${colors.pill}`}
-                  >
-                    {skill}
-                  </motion.span>
-                ))}
+                {group.skills.map((skill) => {
+                  const Icon = skill.icon
+                  return (
+                    <motion.div
+                      key={skill.name}
+                      variants={item}
+                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-surface-2/50 bg-bg/40 hover:border-surface-3 hover:bg-surface-2/30 transition-all cursor-default group"
+                    >
+                      {Icon && (
+                        <Icon
+                          size={16}
+                          style={{ color: skill.iconColor, flexShrink: 0 }}
+                        />
+                      )}
+                      <span className="text-xs text-text-dim group-hover:text-text transition-colors truncate">
+                        {skill.name}
+                      </span>
+                    </motion.div>
+                  )
+                })}
               </motion.div>
             </motion.div>
           )

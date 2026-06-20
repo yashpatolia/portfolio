@@ -2,26 +2,10 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Calendar, GitCommitVertical } from 'lucide-react'
 import { experience, type Role } from '../data/experience'
+import StackPill from './StackPill'
 
 const accent = ['#3b82f6', '#8b5cf6', '#10b981'] as const
 const commitIds = ['c57bry4', 'a91kq2f', 'd8m4t1x'] as const
-
-const pillColors: Record<string, string> = {
-  Java: 'border-amber/30 text-amber bg-amber/5',
-  Kotlin: 'border-violet/30 text-violet bg-violet/5',
-  'Spring Boot': 'border-emerald/30 text-emerald bg-emerald/5',
-  TypeScript: 'border-accent/30 text-accent bg-accent/5',
-  React: 'border-accent/30 text-accent bg-accent/5',
-  SvelteKit: 'border-rose/30 text-rose bg-rose/5',
-  SQLite: 'border-emerald/30 text-emerald bg-emerald/5',
-  Docker: 'border-accent/30 text-accent bg-accent/5',
-  Nginx: 'border-emerald/30 text-emerald bg-emerald/5',
-}
-
-function Pill({ label }: { label: string }) {
-  const cls = pillColors[label] ?? 'border-surface-3 text-text-dim bg-surface-2/40'
-  return <span className={`font-mono text-xs px-2 py-0.5 rounded border ${cls}`}>{label}</span>
-}
 
 function ExperienceCard({ role, i }: { role: Role; i: number }) {
   const color = accent[i]
@@ -85,7 +69,7 @@ function ExperienceCard({ role, i }: { role: Role; i: number }) {
         </div>
 
         <div className="flex flex-wrap gap-1.5 pl-11">
-          {role.stack.map((s) => <Pill key={s} label={s} />)}
+          {role.stack.map((s) => <StackPill key={s} label={s} />)}
         </div>
       </div>
     </motion.div>

@@ -25,7 +25,7 @@ export default function Education() {
         <p className="font-mono text-amber text-xs tracking-[0.2em] mb-3 uppercase">
           05 / Education
         </p>
-        <h2 className="text-4xl font-bold text-gradient-blue">Background</h2>
+        <h2 className="text-4xl font-bold text-text">Background</h2>
       </motion.div>
 
       <motion.div

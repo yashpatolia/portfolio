@@ -24,6 +24,7 @@ export const projects: Project[] = [
       { value: 99, suffix: '%+', label: 'success rate' },
     ],
     links: [
+      { label: 'Live', url: 'https://bumble.seazyns.dev/' },
       { label: 'Repo', url: 'https://github.com/yashpatolia/bumble-unified' },
     ],
   },

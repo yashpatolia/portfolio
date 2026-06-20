@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Download, ArrowDown } from 'lucide-react'
+import { Github, Linkedin, FileText, ArrowDown } from 'lucide-react'
 
 const taglines = ['Software Engineer', 'Backend Developer', 'Full-Stack Builder']
+const resumeHref = `${import.meta.env.BASE_URL}resume.pdf`
 
 export default function Hero() {
   const [taglineIndex, setTaglineIndex] = useState(0)
@@ -31,32 +32,9 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-
-      {/* Glowing orbs */}
-      <motion.div
-        className="absolute w-[700px] h-[700px] rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, rgba(59, 130, 246, 0.10) 0%, transparent 65%)',
-          top: '-15%',
-          left: '-15%',
-        }}
-        animate={{ scale: [1, 1.08, 1], opacity: [0.7, 1, 0.7] }}
-        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="absolute w-[600px] h-[600px] rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 65%)',
-          bottom: '-5%',
-          right: '-10%',
-        }}
-        animate={{ scale: [1.05, 0.95, 1.05], opacity: [0.6, 0.9, 0.6] }}
-        transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-      />
-
-      {/* Grid */}
+      {/* Subtle grid */}
       <div
-        className="absolute inset-0 opacity-[0.022]"
+        className="absolute inset-0 opacity-[0.018]"
         style={{
           backgroundImage:
             'linear-gradient(rgba(148,163,184,1) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,1) 1px, transparent 1px)',
@@ -72,35 +50,29 @@ export default function Hero() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-col items-center gap-6"
         >
-          {/* Name in Space Grotesk */}
+          {/* Name */}
           <h1
-            className="text-6xl md:text-8xl font-bold tracking-[-0.03em] leading-none text-gradient-blue"
+            className="text-6xl md:text-8xl font-bold tracking-[-0.03em] leading-none text-text"
             style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
             Yash Patolia
           </h1>
 
-          {/* Thin separator */}
-          <div className="w-16 h-px bg-gradient-to-r from-transparent via-surface-3 to-transparent" />
-
           {/* Typed tagline */}
-          <div className="h-8 flex items-center justify-center">
-            <span className="font-mono text-base text-text-dim">
-              <span className="text-text-faint select-none">{'>'} </span>
+          <div className="h-7 flex items-center justify-center">
+            <span className="text-base text-text-dim">
               <span className="text-accent">{displayed}</span>
               <motion.span
-                className="text-accent"
+                className="inline-block w-px h-4 bg-accent ml-0.5 align-middle"
                 animate={{ opacity: [1, 0] }}
                 transition={{ repeat: Infinity, duration: 0.8, ease: 'steps(1)' }}
-              >
-                _
-              </motion.span>
+              />
             </span>
           </div>
 
           {/* One-liner */}
-          <p className="font-mono text-xs text-text-faint tracking-wider">
-            McMaster University · Software Engineering Co-op
+          <p className="text-sm text-text-faint">
+            McMaster University &middot; Software Engineering Co-op
           </p>
 
           {/* CTAs */}
@@ -124,11 +96,12 @@ export default function Hero() {
               LinkedIn
             </a>
             <a
-              href="/portfolio/resume.pdf"
-              download
-              className="flex items-center gap-2 px-5 py-2.5 bg-accent text-white rounded-lg hover:bg-accent/90 transition-all text-sm font-medium shadow-glow-blue"
+              href={resumeHref}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 px-5 py-2.5 bg-accent text-white rounded-lg hover:bg-accent/90 transition-all text-sm font-medium"
             >
-              <Download size={15} />
+              <FileText size={15} />
               Resume
             </a>
           </div>

@@ -40,7 +40,7 @@ export default function Contact() {
         <p className="font-mono text-violet text-xs tracking-[0.2em] mb-3 uppercase">
           06 / Contact
         </p>
-        <h2 className="text-4xl font-bold text-gradient-blue mb-4">Get in Touch</h2>
+        <h2 className="text-4xl font-bold text-text mb-4">Get in Touch</h2>
         <p className="text-text-dim leading-relaxed max-w-md mx-auto">
           I'm open to new opportunities, interesting problems, and good conversations.
           Reach out. I'll get back to you.
