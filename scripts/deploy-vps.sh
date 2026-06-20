@@ -26,6 +26,6 @@ rsync -az --delete \
   "$SSH_TARGET:$VPS_PATH/"
 
 ssh -p "$VPS_PORT" -o StrictHostKeyChecking=accept-new "$SSH_TARGET" "\
-  pm2 delete '$PM2_NAME' >/dev/null 2>&1 || true && \
-  pm2 serve '$VPS_PATH' '$APP_PORT' --name '$PM2_NAME' --spa --time\
+  pm2 describe '$PM2_NAME' >/dev/null 2>&1 \
+    || pm2 serve '$VPS_PATH' '$APP_PORT' --name '$PM2_NAME' --spa --time\
 "
