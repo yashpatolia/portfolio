@@ -40,5 +40,4 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           VPS_PORT: ${{ secrets.VPS_PORT }}
           VPS_PATH: ${{ secrets.VPS_PATH }}
-          DIST_DIR: dist
         run: bash ./scripts/deploy-vps.sh
