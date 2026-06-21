@@ -2,7 +2,7 @@
 
 Personal site and portfolio. Source of truth for the build plan below.
 
-Resume lives at: `/Users/yashpatolia/Documents/w26-apps/yash_resume.pdf`
+Resume lives at: `public/resume.pdf` (single source of truth — replace this file to update the download link)
 GitHub: `github.com/yashpatolia`
 LinkedIn: `linkedin.com/in/yash-patolia`
 
