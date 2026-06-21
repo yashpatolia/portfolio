@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
 import { motion, useScroll } from 'framer-motion'
+import { useScrollSpy } from '../hooks/useScrollSpy'
 
 const marks = [
   { n: '00', label: 'Hero', href: '#top' },
@@ -12,24 +12,7 @@ const marks = [
 
 export default function ScrollRail() {
   const { scrollYProgress } = useScroll()
-  const [active, setActive] = useState(0)
-
-  useEffect(() => {
-    const ids = marks.map((m) => m.href.slice(1))
-    const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[]
-    if (els.length === 0) return
-
-    const onScroll = () => {
-      let current = 0
-      els.forEach((el, i) => {
-        if (el.getBoundingClientRect().top <= window.innerHeight * 0.4) current = i
-      })
-      setActive(current)
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  const active = useScrollSpy(marks.map((m) => m.href.slice(1)))
 
   return (
     <nav
@@ -49,10 +32,10 @@ export default function ScrollRail() {
             className="group flex items-center gap-3"
           >
             <span
-              className={`block w-[7px] h-[7px] rounded-full border transition-colors duration-300 ${
+              className={`block w-[7px] h-[7px] rounded-full border transition-all duration-300 ${
                 i === active
-                  ? 'bg-signal border-signal'
-                  : 'bg-canvas border-line group-hover:border-ink-faint'
+                  ? 'bg-signal border-signal scale-110'
+                  : 'bg-canvas border-line group-hover:border-ink-faint group-hover:scale-110'
               }`}
             />
             <span
@@ -61,6 +44,9 @@ export default function ScrollRail() {
               }`}
             >
               {m.n}
+            </span>
+            <span className="font-mono text-[11px] text-ink-faint tracking-[0.1em] uppercase opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200">
+              {m.label}
             </span>
           </a>
         ))}

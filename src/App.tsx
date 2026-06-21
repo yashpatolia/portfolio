@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar'
 import ScrollRail from './components/ScrollRail'
+import OrbField from './components/OrbField'
 import Hero from './components/Hero'
 import Experience from './components/Experience'
 import Projects from './components/Projects'
@@ -10,10 +11,11 @@ import Footer from './components/Footer'
 
 export default function App() {
   return (
-    <>
+    <div className="relative">
+      <OrbField />
       <Navbar />
       <ScrollRail />
-      <main>
+      <main className="relative z-10">
         <Hero />
         <Experience />
         <Projects />
@@ -22,6 +24,6 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
-    </>
+    </div>
   )
 }

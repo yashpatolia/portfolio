@@ -42,8 +42,14 @@ export default function StackPill({ label }: { label: string }) {
   const Icon = tech?.icon
 
   return (
-    <span className="inline-flex items-center gap-1.5 font-mono text-xs px-2.5 py-1 rounded-md border border-line text-ink-dim hover:border-line-bright hover:text-ink transition-colors">
-      {Icon && <Icon size={12} color={tech.color} />}
+    <span className="group inline-flex items-center gap-1.5 font-mono text-xs px-2.5 py-1 rounded-md border border-line text-ink-dim hover:border-line-bright hover:text-ink transition-colors">
+      {Icon && (
+        <Icon
+          size={12}
+          color={tech.color}
+          className="transition-transform duration-200 group-hover:scale-125"
+        />
+      )}
       {label}
     </span>
   )

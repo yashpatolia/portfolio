@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, useScroll } from 'framer-motion'
+import { useScrollSpy } from '../hooks/useScrollSpy'
 
 const navLinks = [
   { label: 'Experience', href: '#experience' },
@@ -13,6 +14,7 @@ const resumeHref = `${import.meta.env.BASE_URL}resume.pdf`
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const { scrollYProgress } = useScroll()
+  const active = useScrollSpy(['top', ...navLinks.map((l) => l.href.slice(1))])
 
   useEffect(() => {
     const unsub = scrollYProgress.on('change', (v) => setScrolled(v > 0.01))
@@ -33,17 +35,26 @@ export default function Navbar() {
           <span className="text-ink group-hover:text-signal transition-colors">yashpatolia.dev</span>
         </a>
         <ul className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="font-mono text-xs text-ink-dim hover:text-ink transition-colors tracking-wide relative group"
-              >
-                {link.label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-signal group-hover:w-full transition-all duration-300" />
-              </a>
-            </li>
-          ))}
+          {navLinks.map((link, i) => {
+            const isActive = active === i + 1
+            return (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className={`font-mono text-xs tracking-wide relative group transition-colors ${
+                    isActive ? 'text-signal' : 'text-ink-dim hover:text-ink'
+                  }`}
+                >
+                  {link.label}
+                  <span
+                    className={`absolute -bottom-0.5 left-0 h-px bg-signal transition-all duration-300 ${
+                      isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}
+                  />
+                </a>
+              </li>
+            )
+          })}
         </ul>
         <a
           href={resumeHref}

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { skillGroups } from '../data/skills'
+import SectionHeader from './SectionHeader'
 
 const container = {
   hidden: {},
@@ -13,17 +14,8 @@ const item = {
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-28 px-6 xl:pl-32 max-w-5xl mx-auto">
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mb-12"
-      >
-        <p className="font-mono text-signal text-xs tracking-[0.2em] mb-3 uppercase">03 / Skills</p>
-        <h2 className="font-display text-4xl text-ink">What I Use</h2>
-      </motion.div>
+    <section id="skills" className="relative py-28 px-6 xl:pl-32 max-w-5xl mx-auto">
+      <SectionHeader n="03" label="Skills" title="What I Use" />
 
       <div className="grid md:grid-cols-2 gap-px bg-line border border-line rounded-lg overflow-hidden">
         {skillGroups.map((group) => (

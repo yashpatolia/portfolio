@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { experience, type Role } from '../data/experience'
 import StackPill from './StackPill'
+import SectionHeader from './SectionHeader'
 
 function ExperienceRow({ role, i }: { role: Role; i: number }) {
   const current = role.dateEnd === 'Present'
@@ -11,8 +12,10 @@ function ExperienceRow({ role, i }: { role: Role; i: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.45, delay: i * 0.08 }}
-      className="grid md:grid-cols-[10rem_1fr] gap-3 md:gap-8 py-7 border-b border-line last:border-b-0"
+      className="group relative grid md:grid-cols-[10rem_1fr] gap-3 md:gap-8 py-7 pl-4 -ml-4 border-b border-line last:border-b-0 transition-colors duration-300 hover:bg-panel/40"
     >
+      <span className="absolute left-0 top-7 bottom-7 w-px bg-line group-hover:bg-signal transition-colors duration-300" />
+
       <div className="flex md:flex-col items-baseline md:items-start gap-2 md:gap-1">
         <span className="font-mono text-xs text-ink-faint tracking-wide">
           {role.dateStart} – {role.dateEnd}
@@ -26,7 +29,7 @@ function ExperienceRow({ role, i }: { role: Role; i: number }) {
 
       <div>
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-1">
-          <h3 className="font-display text-2xl text-ink">{role.company}</h3>
+          <h3 className="font-display text-2xl text-ink transition-colors duration-300 group-hover:text-signal">{role.company}</h3>
           <span className="font-mono text-xs text-ink-faint">{role.location}</span>
         </div>
         <p className="text-sm text-ink-dim mb-3">{role.role}</p>
@@ -50,17 +53,8 @@ function ExperienceRow({ role, i }: { role: Role; i: number }) {
 
 export default function Experience() {
   return (
-    <section id="experience" className="py-28 px-6 xl:pl-32 max-w-5xl mx-auto">
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mb-12"
-      >
-        <p className="font-mono text-signal text-xs tracking-[0.2em] mb-3 uppercase">01 / Experience</p>
-        <h2 className="font-display text-4xl text-ink">Where I've Worked</h2>
-      </motion.div>
+    <section id="experience" className="relative py-28 px-6 xl:pl-32 max-w-5xl mx-auto">
+      <SectionHeader n="01" label="Experience" title="Where I've Worked" />
 
       <div>
         {experience.map((role, i) => (

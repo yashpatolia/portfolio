@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Mail, Github, Linkedin, ArrowUpRight } from 'lucide-react'
+import SectionHeader from './SectionHeader'
 
 const links = [
   {
@@ -24,21 +25,13 @@ const links = [
 
 export default function Contact() {
   return (
-    <section id="contact" className="py-28 px-6 xl:pl-32 max-w-3xl mx-auto">
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mb-12"
-      >
-        <p className="font-mono text-signal text-xs tracking-[0.2em] mb-3 uppercase">05 / Contact</p>
-        <h2 className="font-display text-4xl text-ink mb-4">Get in Touch</h2>
+    <section id="contact" className="relative py-28 px-6 xl:pl-32 max-w-3xl mx-auto">
+      <SectionHeader n="05" label="Contact" title="Get in Touch">
         <p className="text-ink-dim leading-relaxed max-w-md">
           I'm open to new opportunities, interesting problems, and good conversations.
           Reach out. I'll get back to you.
         </p>
-      </motion.div>
+      </SectionHeader>
 
       <div className="border-t border-line">
         {links.map(({ icon: Icon, label, href, display }, i) => (
