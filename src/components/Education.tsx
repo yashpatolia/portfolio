@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import { GraduationCap, BookOpen } from 'lucide-react'
 
 const courses = [
   'Data Structures & Algorithms',
@@ -12,68 +11,47 @@ const courses = [
 
 export default function Education() {
   return (
-    <section id="education" className="py-28 px-6 max-w-4xl mx-auto">
-      <div className="section-divider mb-16" />
-
+    <section id="education" className="py-28 px-6 xl:pl-32 max-w-4xl mx-auto">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="mb-16"
+        className="mb-12"
       >
-        <p className="font-mono text-amber text-xs tracking-[0.2em] mb-3 uppercase">
-          05 / Education
-        </p>
-        <h2 className="text-4xl font-bold text-text">Background</h2>
+        <p className="font-mono text-signal text-xs tracking-[0.2em] mb-3 uppercase">04 / Education</p>
+        <h2 className="font-display text-4xl text-ink">Background</h2>
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
+        initial={{ opacity: 0, y: 18 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
+        className="border border-line rounded-lg p-7 md:p-8"
       >
-        <div className="p-px rounded-xl bg-gradient-to-br from-amber/20 via-surface-3/30 to-transparent shadow-card">
-          <div className="card-gradient rounded-[11px] p-8">
-            <div className="flex items-start gap-5">
-              <div className="p-3 rounded-xl bg-amber/10 border border-amber/20 shrink-0">
-                <GraduationCap size={22} className="text-amber" />
-              </div>
-              <div className="flex-1">
-                <div className="flex flex-wrap items-start justify-between gap-2">
-                  <div>
-                    <h3 className="text-xl font-semibold text-text">McMaster University</h3>
-                    <p className="text-amber font-medium mt-0.5">
-                      BEng Software Engineering (Co-op)
-                    </p>
-                  </div>
-                  <span className="font-mono text-xs text-text-faint border border-surface-3 rounded-full px-3 py-1 bg-surface">
-                    Expected May 2028
-                  </span>
-                </div>
-                <p className="text-text-dim text-sm mt-2">Minor in Mathematics</p>
+        <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
+          <h3 className="font-display text-2xl text-ink">McMaster University</h3>
+          <span className="font-mono text-xs text-ink-faint border border-line rounded px-2.5 py-1">
+            Expected May 2028
+          </span>
+        </div>
+        <p className="text-signal font-medium text-sm mb-0.5">BEng Software Engineering (Co-op)</p>
+        <p className="text-ink-dim text-sm">Minor in Mathematics</p>
 
-                <div className="mt-6 pt-6 border-t border-surface-2">
-                  <div className="flex items-center gap-2 mb-4">
-                    <BookOpen size={14} className="text-text-faint" />
-                    <p className="font-mono text-xs text-text-faint tracking-widest uppercase">
-                      Relevant Coursework
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {courses.map((c) => (
-                      <span
-                        key={c}
-                        className="font-mono text-xs px-3 py-1.5 bg-surface-2/50 text-text-dim rounded-lg border border-surface-3 hover:border-amber/30 hover:text-amber transition-colors"
-                      >
-                        {c}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div className="mt-7 pt-7 border-t border-line">
+          <p className="font-mono text-xs text-ink-faint tracking-widest uppercase mb-4">
+            Relevant Coursework
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {courses.map((c) => (
+              <span
+                key={c}
+                className="font-mono text-xs px-3 py-1.5 border border-line rounded-md text-ink-dim hover:border-signal/40 hover:text-ink transition-colors"
+              >
+                {c}
+              </span>
+            ))}
           </div>
         </div>
       </motion.div>

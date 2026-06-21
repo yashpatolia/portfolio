@@ -23,24 +23,24 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? 'bg-bg/80 backdrop-blur-xl border-b border-surface-2/60'
+          ? 'bg-canvas/85 backdrop-blur-md border-b border-line'
           : 'bg-transparent'
       }`}
     >
       <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="#" className="font-mono text-sm font-semibold tracking-wider group flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-accent animate-pulse-slow glow-dot text-accent" />
-          <span className="text-text group-hover:text-accent transition-colors">yashpatolia.dev</span>
+        <a href="#top" className="font-mono text-sm tracking-wider group flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-signal" />
+          <span className="text-ink group-hover:text-signal transition-colors">yashpatolia.dev</span>
         </a>
         <ul className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
-                className="font-mono text-xs text-text-dim hover:text-text transition-colors tracking-wide relative group"
+                className="font-mono text-xs text-ink-dim hover:text-ink transition-colors tracking-wide relative group"
               >
                 {link.label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-accent group-hover:w-full transition-all duration-300" />
+                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-signal group-hover:w-full transition-all duration-300" />
               </a>
             </li>
           ))}
@@ -49,14 +49,14 @@ export default function Navbar() {
           href={resumeHref}
           target="_blank"
           rel="noreferrer"
-          className="hidden md:inline-flex items-center gap-2 px-4 py-1.5 border border-surface-3 bg-surface text-text-dim font-mono text-xs rounded-lg hover:border-accent hover:text-accent hover:bg-accent/5 transition-all duration-200"
+          className="hidden md:inline-flex items-center gap-2 px-4 py-1.5 border border-line text-ink-dim font-mono text-xs rounded-md hover:border-signal/50 hover:text-signal transition-all duration-200"
         >
           Resume ↗
         </a>
       </nav>
 
       <motion.div
-        className="h-px bg-gradient-to-r from-transparent via-accent to-transparent origin-left"
+        className="h-px bg-signal origin-left"
         style={{ scaleX: scrollYProgress, opacity: scrollYProgress }}
       />
     </header>

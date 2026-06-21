@@ -15,14 +15,12 @@ export interface Skill {
 
 export interface SkillGroup {
   label: string
-  color: 'blue' | 'violet' | 'emerald' | 'amber'
   skills: Skill[]
 }
 
 export const skillGroups: SkillGroup[] = [
   {
     label: 'Languages',
-    color: 'blue',
     skills: [
       { name: 'Python', icon: SiPython, iconColor: '#3776AB' },
       { name: 'TypeScript', icon: SiTypescript, iconColor: '#3178C6' },
@@ -34,7 +32,6 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     label: 'Frameworks',
-    color: 'violet',
     skills: [
       { name: 'React', icon: SiReact, iconColor: '#61DAFB' },
       { name: 'Spring Boot', icon: SiSpring, iconColor: '#6DB33F' },
@@ -48,7 +45,6 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     label: 'Databases & Infrastructure',
-    color: 'emerald',
     skills: [
       { name: 'PostgreSQL', icon: SiPostgresql, iconColor: '#4169E1' },
       { name: 'MongoDB', icon: SiMongodb, iconColor: '#47A248' },
@@ -65,7 +61,6 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     label: 'AI & Machine Learning',
-    color: 'amber',
     skills: [
       { name: 'Qdrant', icon: Database, iconColor: '#DC244C' },
       { name: 'RAG Pipelines', icon: Layers, iconColor: '#F59E0B' },

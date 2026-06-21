@@ -42,7 +42,7 @@ export default function StackPill({ label }: { label: string }) {
   const Icon = tech?.icon
 
   return (
-    <span className="inline-flex items-center gap-1.5 font-mono text-xs px-2.5 py-1 rounded-md border border-surface-2/70 bg-surface-2/30 text-text-dim hover:border-surface-3 hover:text-text transition-colors">
+    <span className="inline-flex items-center gap-1.5 font-mono text-xs px-2.5 py-1 rounded-md border border-line text-ink-dim hover:border-line-bright hover:text-ink transition-colors">
       {Icon && <Icon size={12} color={tech.color} />}
       {label}
     </span>

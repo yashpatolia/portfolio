@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Github, Linkedin, FileText, ArrowDown } from 'lucide-react'
+import { Github, Linkedin, FileText } from 'lucide-react'
 
 const taglines = ['Software Engineer', 'Backend Developer', 'Full-Stack Builder']
 const resumeHref = `${import.meta.env.BASE_URL}resume.pdf`
@@ -31,96 +31,77 @@ export default function Hero() {
   }, [displayed, deleting, taglineIndex])
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Subtle grid */}
-      <div
-        className="absolute inset-0 opacity-[0.018]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(148,163,184,1) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,1) 1px, transparent 1px)',
-          backgroundSize: '72px 72px',
-        }}
-      />
-
-      {/* Content */}
-      <div className="relative z-10 max-w-2xl mx-auto px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
+    <section id="top" className="relative min-h-screen flex items-center px-6 xl:pl-32 max-w-5xl mx-auto">
+      <div className="w-full">
+        <motion.h1
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col items-center gap-6"
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="font-display text-6xl sm:text-7xl md:text-8xl font-medium leading-none tracking-tight text-ink mb-5"
         >
-          {/* Name */}
-          <h1
-            className="text-6xl md:text-8xl font-bold tracking-[-0.03em] leading-none text-text"
-            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+          Yash Patolia
+        </motion.h1>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="h-7 flex items-center mb-3"
+        >
+          <span className="font-mono text-base text-signal">
+            {displayed}
+            <motion.span
+              className="inline-block w-px h-4 bg-signal ml-0.5 align-middle"
+              animate={{ opacity: [1, 0] }}
+              transition={{ repeat: Infinity, duration: 0.8, ease: 'steps(1)' }}
+            />
+          </span>
+        </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.25 }}
+          className="font-mono text-sm text-ink-faint mb-10"
+        >
+          McMaster University &middot; Software Engineering Co-op
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.35 }}
+          className="flex items-center gap-3 flex-wrap"
+        >
+          <a
+            href="https://github.com/yashpatolia"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2 px-4 py-2 border border-line text-ink-dim rounded-md hover:border-line-bright hover:text-ink transition-colors text-sm"
           >
-            Yash Patolia
-          </h1>
-
-          {/* Typed tagline */}
-          <div className="h-7 flex items-center justify-center">
-            <span className="text-base text-text-dim">
-              <span className="text-accent">{displayed}</span>
-              <motion.span
-                className="inline-block w-px h-4 bg-accent ml-0.5 align-middle"
-                animate={{ opacity: [1, 0] }}
-                transition={{ repeat: Infinity, duration: 0.8, ease: 'steps(1)' }}
-              />
-            </span>
-          </div>
-
-          {/* One-liner */}
-          <p className="text-sm text-text-faint">
-            McMaster University &middot; Software Engineering Co-op
-          </p>
-
-          {/* CTAs */}
-          <div className="flex items-center justify-center gap-3 flex-wrap pt-2">
-            <a
-              href="https://github.com/yashpatolia"
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-2 px-5 py-2.5 bg-surface border border-surface-3 text-text-dim rounded-lg hover:border-accent/50 hover:text-text hover:bg-surface-2 transition-all text-sm font-medium group"
-            >
-              <Github size={15} className="group-hover:text-accent transition-colors" />
-              GitHub
-            </a>
-            <a
-              href="https://linkedin.com/in/yash-patolia"
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-2 px-5 py-2.5 bg-surface border border-surface-3 text-text-dim rounded-lg hover:border-violet/50 hover:text-text hover:bg-surface-2 transition-all text-sm font-medium group"
-            >
-              <Linkedin size={15} className="group-hover:text-violet transition-colors" />
-              LinkedIn
-            </a>
-            <a
-              href={resumeHref}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-2 px-5 py-2.5 bg-accent text-white rounded-lg hover:bg-accent/90 transition-all text-sm font-medium"
-            >
-              <FileText size={15} />
-              Resume
-            </a>
-          </div>
+            <Github size={15} />
+            GitHub
+          </a>
+          <a
+            href="https://linkedin.com/in/yash-patolia"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2 px-4 py-2 border border-line text-ink-dim rounded-md hover:border-line-bright hover:text-ink transition-colors text-sm"
+          >
+            <Linkedin size={15} />
+            LinkedIn
+          </a>
+          <a
+            href={resumeHref}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2 px-4 py-2 bg-signal text-canvas rounded-md hover:bg-signal-dim transition-colors text-sm font-medium"
+          >
+            <FileText size={15} />
+            Resume
+          </a>
         </motion.div>
       </div>
-
-      {/* Scroll cue — anchored to section bottom, not content */}
-      <motion.div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-text-faint z-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, y: [0, 6, 0] }}
-        transition={{
-          opacity: { delay: 1.2, duration: 0.6 },
-          y: { repeat: Infinity, duration: 2.5, delay: 1.2 },
-        }}
-      >
-        <span className="font-mono text-xs tracking-widest">scroll</span>
-        <ArrowDown size={13} />
-      </motion.div>
     </section>
   )
 }

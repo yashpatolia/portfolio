@@ -1,11 +1,11 @@
 export default function Footer() {
   return (
-    <footer className="py-10 px-6 border-t border-surface-2/40">
+    <footer className="py-10 px-6 border-t border-line">
       <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4">
-        <p className="font-mono text-xs text-text-faint">
+        <p className="font-mono text-xs text-ink-faint">
           © 2026 Yash Patolia
         </p>
-        <p className="font-mono text-xs text-text-faint">
+        <p className="font-mono text-xs text-ink-faint">
           Built with React · TypeScript · Framer Motion
         </p>
       </div>

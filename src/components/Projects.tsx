@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { ArrowUpRight, Github, ExternalLink } from 'lucide-react'
+import { Github, ExternalLink } from 'lucide-react'
 import { projects } from '../data/projects'
 import { useCountUp } from '../hooks/useCountUp'
 import StackPill from './StackPill'
@@ -9,9 +9,11 @@ function Metric({ value, suffix, label, inView }: { value: number; suffix: strin
   const count = useCountUp(value, 1400, inView)
   const displayValue = suffix === 'M+' ? '1' : count
   return (
-    <div>
-      <div className="text-xl font-bold text-text tabular-nums">{displayValue}{suffix}</div>
-      <div className="text-xs text-text-faint mt-0.5">{label}</div>
+    <div className="px-4 first:pl-0 border-l border-line first:border-l-0">
+      <div className="font-mono text-lg text-ink tabular-nums">
+        {displayValue}<span className="text-signal">{suffix}</span>
+      </div>
+      <div className="font-mono text-[10px] text-ink-faint uppercase tracking-[0.1em] mt-0.5">{label}</div>
     </div>
   )
 }
@@ -22,27 +24,21 @@ function ProjectCard({ index, inView }: { index: number; inView: boolean }) {
   const repoLink = project.links.find((l) => l.label === 'Repo')
   const isPrivate = project.links.length === 0
 
-  const statusLabel = index === 0 ? 'Live' : index === 1 ? 'Private' : 'Open Source'
-  const statusClass = index === 0
-    ? 'text-emerald border-emerald/30 bg-emerald/5'
-    : 'text-text-faint border-surface-3 bg-surface-2/30'
+  const statusLabel = index === 0 ? 'live' : index === 1 ? 'private' : 'open-source'
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.08 }}
-      className="rounded-xl border border-surface-2/70 bg-surface shadow-card hover:border-surface-3 hover:shadow-card-hover transition-all duration-300"
+      className="border border-line rounded-lg hover:border-line-bright transition-colors duration-300"
     >
-      <div className="p-5 md:p-6">
-        {/* Header */}
+      <div className="p-5 md:p-7">
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex items-center gap-3 flex-wrap">
-            <h3 className="text-lg font-semibold text-text">{project.name}</h3>
-            <span className={`font-mono text-[11px] px-2 py-0.5 rounded border ${statusClass}`}>
-              {statusLabel}
-            </span>
+            <h3 className="font-display text-xl text-ink">{project.name}</h3>
+            <span className="font-mono text-[11px] text-ink-faint">[{statusLabel}]</span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             {liveLink && (
@@ -50,7 +46,7 @@ function ProjectCard({ index, inView }: { index: number; inView: boolean }) {
                 href={liveLink.url}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-accent/40 bg-accent/5 text-accent font-mono text-xs hover:bg-accent/10 transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-line text-ink-dim font-mono text-xs hover:border-signal/50 hover:text-signal transition-colors"
               >
                 <ExternalLink size={12} />
                 Live
@@ -61,34 +57,28 @@ function ProjectCard({ index, inView }: { index: number; inView: boolean }) {
                 href={repoLink.url}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-surface-3 bg-surface-2/30 text-text-dim font-mono text-xs hover:border-surface-3/80 hover:text-text transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-line text-ink-dim font-mono text-xs hover:border-line-bright hover:text-ink transition-colors"
               >
                 <Github size={12} />
                 Repo
               </a>
             )}
             {isPrivate && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-surface-3 bg-surface-2/30 text-text-faint font-mono text-xs">
-                <ArrowUpRight size={12} />
-                Private
-              </span>
+              <span className="font-mono text-xs text-ink-faint">no public repo</span>
             )}
           </div>
         </div>
 
-        {/* Description */}
-        <p className="text-text-dim text-sm leading-relaxed mb-5 max-w-[70ch]">
+        <p className="text-ink-dim text-sm leading-relaxed mb-5 max-w-[68ch]">
           {project.description}
         </p>
 
-        {/* Metrics */}
-        <div className="flex flex-wrap gap-6 mb-5 py-4 border-y border-surface-2/50">
+        <div className="flex flex-wrap gap-y-3 mb-5 py-4 border-y border-line">
           {project.metrics.map((metric) => (
             <Metric key={metric.label} {...metric} inView={inView} />
           ))}
         </div>
 
-        {/* Stack */}
         <div className="flex flex-wrap gap-1.5">
           {project.stack.map((s) => (
             <StackPill key={s} label={s} />
@@ -104,18 +94,16 @@ export default function Projects() {
   const inView = useInView(sectionRef, { once: true, margin: '-80px' })
 
   return (
-    <section id="projects" className="py-28 px-6 max-w-5xl mx-auto">
-      <div className="section-divider mb-16" />
-
+    <section id="projects" className="py-28 px-6 xl:pl-32 max-w-5xl mx-auto">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="mb-16"
+        className="mb-12"
       >
-        <p className="font-mono text-accent text-xs tracking-[0.2em] mb-3 uppercase">03 / Projects</p>
-        <h2 className="text-4xl font-bold text-text">What I've Built</h2>
+        <p className="font-mono text-signal text-xs tracking-[0.2em] mb-3 uppercase">02 / Projects</p>
+        <h2 className="font-display text-4xl text-ink">What I've Built</h2>
       </motion.div>
 
       <div ref={sectionRef} className="space-y-5">
