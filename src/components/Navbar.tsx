@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react'
-import { motion, useScroll } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence, useScroll } from 'framer-motion'
+import { ChevronDown, Github, ArrowUpRight } from 'lucide-react'
 import { useScrollSpy } from '../hooks/useScrollSpy'
+import { extras } from '../data/extras'
 
 const navLinks = [
   { label: 'Experience', href: '#experience' },
@@ -13,6 +15,8 @@ const resumeHref = `${import.meta.env.BASE_URL}resume.pdf`
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const [moreOpen, setMoreOpen] = useState(false)
+  const moreRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll()
   const active = useScrollSpy(['top', ...navLinks.map((l) => l.href.slice(1))])
 
@@ -20,6 +24,15 @@ export default function Navbar() {
     const unsub = scrollYProgress.on('change', (v) => setScrolled(v > 0.01))
     return unsub
   }, [scrollYProgress])
+
+  useEffect(() => {
+    if (!moreOpen) return
+    const onClick = (e: MouseEvent) => {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) setMoreOpen(false)
+    }
+    document.addEventListener('mousedown', onClick)
+    return () => document.removeEventListener('mousedown', onClick)
+  }, [moreOpen])
 
   return (
     <header
@@ -56,14 +69,68 @@ export default function Navbar() {
             )
           })}
         </ul>
-        <a
-          href={resumeHref}
-          target="_blank"
-          rel="noreferrer"
-          className="hidden md:inline-flex items-center gap-2 px-4 py-1.5 border border-line text-ink-dim font-mono text-xs rounded-md hover:border-signal/50 hover:text-signal transition-all duration-200"
-        >
-          Resume ↗
-        </a>
+        <div className="hidden md:flex items-center gap-4">
+          <div className="relative" ref={moreRef}>
+            <button
+              onClick={() => setMoreOpen((v) => !v)}
+              className="flex items-center gap-1 font-mono text-xs tracking-wide text-ink-dim hover:text-ink transition-colors"
+            >
+              More
+              <ChevronDown
+                size={12}
+                className={`transition-transform duration-200 ${moreOpen ? 'rotate-180' : ''}`}
+              />
+            </button>
+            <AnimatePresence>
+              {moreOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute top-full right-0 mt-3 w-60 rounded-md border border-line bg-canvas/95 backdrop-blur-md p-1.5 shadow-lg"
+                >
+                  {extras.map((extra) => (
+                    <div
+                      key={extra.name}
+                      className="flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-line/30 transition-colors"
+                    >
+                      <span className="font-mono text-xs text-ink-dim">{extra.name}</span>
+                      <div className="flex items-center gap-2.5 shrink-0">
+                        <a
+                          href={extra.repo}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`${extra.name} repo`}
+                          className="text-ink-faint hover:text-ink transition-colors"
+                        >
+                          <Github size={13} />
+                        </a>
+                        <a
+                          href={extra.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`${extra.name} live site`}
+                          className="text-ink-faint hover:text-signal transition-colors"
+                        >
+                          <ArrowUpRight size={13} />
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+          <a
+            href={resumeHref}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-1.5 border border-line text-ink-dim font-mono text-xs rounded-md hover:border-signal/50 hover:text-signal transition-all duration-200"
+          >
+            Resume ↗
+          </a>
+        </div>
       </nav>
 
       <motion.div

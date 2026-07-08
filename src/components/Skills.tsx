@@ -15,7 +15,7 @@ const item = {
 export default function Skills() {
   return (
     <section id="skills" className="relative py-28 px-6 xl:pl-32 max-w-5xl mx-auto">
-      <SectionHeader n="03" label="Skills" title="What I Use" />
+      <SectionHeader n="04" label="Skills" title="What I Use" />
 
       <div className="grid md:grid-cols-2 gap-px bg-line border border-line rounded-lg overflow-hidden">
         {skillGroups.map((group) => (

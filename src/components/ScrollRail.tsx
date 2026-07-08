@@ -5,9 +5,10 @@ const marks = [
   { n: '00', label: 'Hero', href: '#top' },
   { n: '01', label: 'Experience', href: '#experience' },
   { n: '02', label: 'Projects', href: '#projects' },
-  { n: '03', label: 'Skills', href: '#skills' },
-  { n: '04', label: 'Education', href: '#education' },
-  { n: '05', label: 'Contact', href: '#contact' },
+  { n: '03', label: 'Extras', href: '#extras' },
+  { n: '04', label: 'Skills', href: '#skills' },
+  { n: '05', label: 'Education', href: '#education' },
+  { n: '06', label: 'Contact', href: '#contact' },
 ]
 
 export default function ScrollRail() {

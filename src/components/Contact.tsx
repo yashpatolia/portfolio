@@ -26,7 +26,7 @@ const links = [
 export default function Contact() {
   return (
     <section id="contact" className="relative py-28 px-6 xl:pl-32 max-w-3xl mx-auto">
-      <SectionHeader n="05" label="Contact" title="Get in Touch">
+      <SectionHeader n="06" label="Contact" title="Get in Touch">
         <p className="text-ink-dim leading-relaxed max-w-md">
           I'm open to new opportunities, interesting problems, and good conversations.
           Reach out. I'll get back to you.

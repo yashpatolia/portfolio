@@ -14,7 +14,7 @@ const courses = [
 export default function Education() {
   return (
     <section id="education" className="relative py-28 px-6 xl:pl-32 max-w-4xl mx-auto">
-      <SectionHeader n="04" label="Education" title="Background" />
+      <SectionHeader n="05" label="Education" title="Background" />
 
       <motion.div
         initial={{ opacity: 0, y: 18 }}
