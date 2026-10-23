@@ -1,0 +1,8 @@
+{
+  "name": "portfolio-capture",
+  "private": true,
+  "type": "module",
+  "description": "Dev-only: captures and frames project images. Not part of the site build.",
+  "scripts": { "capture": "node capture.mjs" },
+  "devDependencies": { "playwright": "^1.64.0", "sharp": "^0.34.0" }
+}

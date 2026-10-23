@@ -1,110 +1,98 @@
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
-import { Github, ExternalLink } from 'lucide-react'
+import { useState } from 'react'
 import { projects } from '../data/projects'
-import { useCountUp } from '../hooks/useCountUp'
-import StackPill from './StackPill'
-import TiltPanel from './TiltPanel'
-import SectionHeader from './SectionHeader'
+import { useProjectImages } from '../lib/projectImages'
+import Gallery from './Gallery'
 
-function Metric({ value, suffix, label, inView }: { value: number; suffix: string; label: string; inView: boolean }) {
-  const count = useCountUp(value, 1400, inView)
-  const displayValue = suffix === 'M+' ? '1' : count
-  return (
-    <div className="px-4 first:pl-0 border-l border-line first:border-l-0">
-      <div className="font-mono text-lg text-ink tabular-nums">
-        {displayValue}<span className="text-signal">{suffix}</span>
-      </div>
-      <div className="font-mono text-[10px] text-ink-faint uppercase tracking-[0.1em] mt-0.5">{label}</div>
-    </div>
-  )
+const tones = ['t-ink', 't-sage', 't-clay', '', 't-sage', 't-clay']
+const pad = (n: number) => String(n).padStart(2, '0')
+
+interface Props {
+  filter: string | null
+  onTag: (tag: string) => void
+  onClear: () => void
 }
 
-function ProjectCard({ index, inView }: { index: number; inView: boolean }) {
-  const project = projects[index]
-  const liveLink = project.links.find((l) => l.label === 'Live')
-  const repoLink = project.links.find((l) => l.label === 'Repo')
-  const isPrivate = project.links.length === 0
-
-  const statusLabel = index === 0 ? 'live' : index === 1 ? 'private' : 'open-source'
+export default function Projects({ filter, onTag, onClear }: Props) {
+  const [open, setOpen] = useState<number | null>(null)
+  // Galleries mount on first open so their large images are not downloaded up front.
+  const [seen, setSeen] = useState<number[]>([])
+  const images = useProjectImages()
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
-    >
-      <TiltPanel className="border border-line rounded-lg hover:border-line-bright transition-colors duration-300">
-        <div className="p-5 md:p-7">
-          <div className="flex items-start justify-between gap-4 mb-4">
-            <div className="flex items-center gap-3 flex-wrap">
-              <h3 className="font-display text-xl text-ink">{project.name}</h3>
-              <span className="font-mono text-[11px] text-ink-faint">[{statusLabel}]</span>
-            </div>
-            <div className="flex items-center gap-2 shrink-0">
-              {liveLink && (
-                <a
-                  href={liveLink.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-line text-ink-dim font-mono text-xs hover:border-signal/50 hover:text-signal transition-all group"
-                >
-                  <ExternalLink size={12} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                  Live
-                </a>
-              )}
-              {repoLink && (
-                <a
-                  href={repoLink.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-line text-ink-dim font-mono text-xs hover:border-line-bright hover:text-ink transition-all group"
-                >
-                  <Github size={12} className="transition-transform group-hover:rotate-[-8deg]" />
-                  Repo
-                </a>
-              )}
-              {isPrivate && (
-                <span className="font-mono text-xs text-ink-faint">no public repo</span>
-              )}
-            </div>
-          </div>
-
-          <p className="text-ink-dim text-sm leading-relaxed mb-5 max-w-[68ch]">
-            {project.description}
-          </p>
-
-          <div className="flex flex-wrap gap-y-3 mb-5 py-4 border-y border-line">
-            {project.metrics.map((metric) => (
-              <Metric key={metric.label} {...metric} inView={inView} />
-            ))}
-          </div>
-
-          <div className="flex flex-wrap gap-1.5">
-            {project.stack.map((s) => (
-              <StackPill key={s} label={s} />
-            ))}
-          </div>
-        </div>
-      </TiltPanel>
-    </motion.div>
-  )
-}
-
-export default function Projects() {
-  const sectionRef = useRef(null)
-  const inView = useInView(sectionRef, { once: true, margin: '-80px' })
-
-  return (
-    <section id="projects" className="relative py-28 px-6 xl:pl-32 max-w-5xl mx-auto">
-      <SectionHeader n="02" label="Projects" title="What I've Built" />
-
-      <div ref={sectionRef} className="space-y-5">
-        {projects.map((_, index) => (
-          <ProjectCard key={projects[index].name} index={index} inView={inView} />
-        ))}
+    <>
+      <h2 className="h" id="projects">
+        Projects <small>{pad(projects.length)} selected</small>
+        {filter && (
+          <span className="flt">
+            Filtering: {filter}
+            <button type="button" onClick={onClear} aria-label="Clear filter">&times;</button>
+          </span>
+        )}
+      </h2>
+      <p className="hint">Click a project to open its gallery. Click any skill or stack tag to filter the projects that use it.</p>
+      <div className="plist">
+        {projects.map((p, i) => {
+          const slides = p.slug ? images[p.slug] : undefined
+          const isOpen = open === i
+          const dim = filter !== null && !p.stack.includes(filter)
+          return (
+            <article
+              key={p.name}
+              className={`c pj ${tones[i % tones.length]}${isOpen ? ' open' : ''}${dim ? ' dim' : ''}`}
+              style={{ '--i': i % 3 } as React.CSSProperties}
+            >
+              <button type="button" className="pj-h" aria-expanded={isOpen} aria-controls={`pj-${i}`} onClick={() => { setOpen(isOpen ? null : i); setSeen((v) => (v.includes(i) ? v : [...v, i])) }}>
+                <span className="pn">{pad(i + 1)}</span>
+                <span>
+                  <span className="pname">{p.name}</span>
+                  {p.note && <span className="pnote">{p.note}</span>}
+                  {p.summary && <span className="pdesc">{p.summary}</span>}
+                </span>
+                <span className="pstack">
+                  {p.stack.slice(0, 4).join(' · ')}
+                  {p.stack.length > 4 && ` · +${p.stack.length - 4}`}
+                </span>
+                {slides?.[0] ? <img className="thumb" src={slides[0].small} width={slides[0].width} height={slides[0].height} alt="" loading="lazy" /> : <span className="thumb-ph" />}
+                <span className="chev"><span>+</span></span>
+              </button>
+              <div className="pj-m" id={`pj-${i}`}>
+                <div>
+                  <div className={`pj-in${slides ? '' : ' nog'}`}>
+                    {slides && slides.length > 0 && (
+                      <div className="gal-slot">{seen.includes(i) && <Gallery slides={slides} title={p.name} active={isOpen} />}</div>
+                    )}
+                    <div>
+                      <p>{p.description}</p>
+                      <div className="tags">
+                        {p.stack.map((s) => (
+                          <button key={s} type="button" className={`tag${filter === s ? ' act' : ''}`} onClick={() => onTag(s)}>{s}</button>
+                        ))}
+                      </div>
+                      {p.metrics.length > 0 && (
+                        <div className="mets">
+                          {p.metrics.map((m) => (
+                            <div key={m.label}>
+                              <b>{m.prefix}{m.value}{m.suffix}</b>
+                              <span>{m.label}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {p.links.length > 0 && (
+                        <div className="go">
+                          {p.links.map((l) => (
+                            <a key={l.url} className="pill" href={l.url} target="_blank" rel="noreferrer">{l.label} &#8599;</a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          )
+        })}
       </div>
-    </section>
+    </>
   )
 }

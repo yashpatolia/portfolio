@@ -1,10 +1,11 @@
-# Yash Patolia — SWE Portfolio
+# Yash Patolia | SWE Portfolio
 
-Personal site and portfolio. Source of truth for the build plan below.
+Personal site and portfolio.
 
-Resume lives at: `public/resume.pdf` (single source of truth — replace this file to update the download link)
+Resume: `public/resume.pdf` (single source of truth, replace this file to update the download link)
 GitHub: `github.com/yashpatolia`
 LinkedIn: `linkedin.com/in/yash-patolia`
+Email: `yashpatolia1@gmail.com`
 
 ---
 
@@ -13,129 +14,106 @@ LinkedIn: `linkedin.com/in/yash-patolia`
 | Layer | Choice |
 |---|---|
 | Framework | Vite + React 18 + TypeScript |
-| Styling | Tailwind CSS v4 |
-| Animations | Framer Motion |
-| Icons | Lucide React |
-| Fonts | Inter (body), JetBrains Mono (code/accents) |
-| Deploy | GitHub Pages via GitHub Actions |
+| Styling | Tailwind CSS v3 + hand-written CSS in `src/index.css` |
+| Motion | CSS keyframes / transitions + small IntersectionObserver hooks. No animation library. |
+| Icons | None. Typographic glyphs (↗ → ●) only. |
+| Deploy | GitHub Actions → VPS (`.github/workflows/deploy.yml`, `scripts/deploy-vps.sh`) |
 
 ---
 
-## Design Direction
+## Writing rule
 
-- Dark mode only — deep navy/slate (`#0f172a` bg), not pure black
-- Accent: electric blue (`#2563eb`), secondary green for "live" indicators
-- High whitespace, minimal clutter — looks like a product, not a template
-- Monospace accents for anything code-adjacent (stack badges, section labels)
-- Animations triggered on scroll entry — nothing plays until you see it
+Never use em dashes (the long dash character) anywhere: site copy, code comments,
+commit messages, docs, or replies. Use commas, periods, colons or parentheses instead.
+
+## Frontend design: read this before touching any UI
+
+This file is the **only** source of frontend design direction. Do not invoke design
+skills (frontend-design, impeccable, etc.) for this repo, and do not add separate
+design docs. If the direction changes, change it here.
+
+Earlier designs (a dark teal one and a brick-red poster) were thrown away on purpose. Do not
+reintroduce them.
+
+<frontend_aesthetics>
+You tend to converge toward generic, "on distribution" outputs. In frontend design, this creates what users call the "AI slop" aesthetic. Avoid this: make creative, distinctive frontends that surprise and delight. Focus on:
+Typography: Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts like Arial and Inter; opt instead for distinctive choices that elevate the frontend's aesthetics.
+Color & Theme: Commit to a cohesive aesthetic. Use CSS variables for consistency. Dominant colors with sharp accents outperform timid, evenly-distributed palettes. Draw from IDE themes and cultural aesthetics for inspiration.
+Motion: Use animations for effects and micro-interactions. Prioritize CSS-only solutions for HTML. Use Motion library for React when available. Focus on high-impact moments: one well-orchestrated page load with staggered reveals (animation-delay) creates more delight than scattered micro-interactions.
+Backgrounds: Create atmosphere and depth rather than defaulting to solid colors. Layer CSS gradients, use geometric patterns, or add contextual effects that match the overall aesthetic.
+Avoid generic AI-generated aesthetics:
+- Overused font families (Inter, Roboto, Arial, system fonts)
+- Clichéd color schemes (particularly purple gradients on white backgrounds)
+- Predictable layouts and component patterns
+- Cookie-cutter design that lacks context-specific character
+Interpret creatively and make unexpected choices that feel genuinely designed for the context. Vary between light and dark themes, different fonts, different aesthetics. You still tend to converge on common choices (Space Grotesk, for example) across generations. Avoid this: it is critical that you think outside the box!
+</frontend_aesthetics>
+
+### Why this exists
+Per Anthropic's "Prompting Claude for Frontend Aesthetics" cookbook: left alone, Claude
+drifts to conservative, on-distribution UI (default fonts, purple-on-white, stock
+layouts) and keeps converging on the same "alternative" picks across generations.
+The fix is to steer each dimension explicitly (typography, color, motion,
+backgrounds), name the defaults to avoid, and lock a theme so it stays consistent.
+
+### Current style: "Oat Bento"
+Soft, neutral, rounded bento tiles with a serif display face. Calm and readable first,
+with a few well-chosen interactions. Light and dark themes (toggle in the nav, saved in
+`localStorage` as `oat-theme`, defaults to the system preference).
+
+- **Palette** (CSS variables in `src/index.css`, light under `:root`, dark under `[data-theme='dark']`):
+  `--bg` oat, `--card` / `--card2` warm paper, `--ink` near-black brown, `--sage` and
+  `--clay` as the two soft accents (plus `--sage-s` / `--clay-s` tints for tiles),
+  `--tile` / `--tile-t` for the dark hero and contact tiles. No saturated colors, no purple.
+- **Type**: Newsreader for display and large numbers, Hanken Grotesk for body and labels.
+  Body text 17px, muted text must keep at least 4.5:1 contrast, labels no smaller than 12.5px.
+  Never Inter/Roboto/Arial/system/Space Grotesk.
+- **Layout**: full-width 12-column bento (no centered max-width column), 32px rounded
+  tiles, compact accordion for projects (collapsed rows with a thumbnail and one-line
+  summary, open to a gallery plus details).
+- **Motion**: staggered tile reveal on scroll (IntersectionObserver sets `data-in`),
+  cursor spotlight inside tiles, animated mesh in the hero, count-up on the highlight number,
+  skills marquee, gallery crossfade with progress dots. Always honor `prefers-reduced-motion`.
+- **Interactions**: clicking any skill or stack tag filters the project list; project
+  galleries support dots, arrows, swipe and arrow keys.
+- **Content-first rules**: real copy and metrics live in `src/data/*`. Never invent
+  numbers, employers or links; only add a metric once the owner has confirmed it is real.
+  Mobile-first: must be clean at 375px with no horizontal scroll.
+
+### Process for any UI change
+1. State the aesthetic choice (font, palette, motion) in a sentence before coding.
+2. Edit tokens in `src/index.css` / `tailwind.config.ts` rather than hard-coding hex values.
+3. Check it in the browser at desktop and 375px before calling it done.
 
 ---
 
 ## Sections
+Hero tiles (name, about, highlight, now, local time, links, skills marquee) · Experience ·
+Projects · Skills · Education and Contact (+ Footer)
 
-### 1. Hero
-- Name, animated typing tagline cycling through: "Software Engineer" / "Backend Developer" / "Full-Stack Builder"
-- One-liner bio pulled from resume context
-- CTA row: GitHub, LinkedIn, Download Resume
-- Subtle animated background — floating grid or noise texture, not distracting
+Content lives in `src/data/` as typed plain data: `site.ts`, `experience.ts`, `projects.ts`,
+`skills.ts`, `education.ts`.
 
-### 2. Experience (Timeline)
-Three roles, newest first:
-- PointClickCare — May 2026–Present — Java, Spring Boot, Kotlin, TypeScript
-- PointClickCare — Sept 2025–Dec 2025 — Java, Spring Boot, Kotlin, TypeScript, React
-- Jiyash Auto — May 2025–Aug 2025 — SvelteKit, TypeScript, SQLite, Docker, Nginx
+## Project images
+`public/projects/*.webp` and `public/projects/manifest.json` are generated by `tools/capture`
+(dev-only Playwright + sharp, see its README). Each project in `projects.ts` has a `slug`
+that keys into the manifest. Screenshots come from live sites or from local copies running
+on invented data; Celestial uses rendered Discord mockups (captions say "mockup"). Never
+put real people's data in an image.
 
-Each card: company name, role, date range, location, stack pill row, bullet points with metrics.
-Animated vertical timeline line draws down as you scroll.
+## Key metrics
+The numbers shown on the site are in `src/data/projects.ts` (the source of truth). The
+owner confirmed them as real.
 
-### 3. Projects
-Two featured cards:
-- **Game Chat Bridge** — Python, TypeScript, React, FastAPI, PostgreSQL, Node.js — live site + repo links
-- **Patient Discharge Assistant** — Python, React, Qdrant, Azure OpenAI, Docker
-
-Card layout: name + stack pills + description + links. On hover: card lifts, brief detail expands.
-
-### 4. Skills
-Grouped pill grid, animated stagger on scroll entry:
-- **Languages:** Python, Java, TypeScript, JavaScript, SQL, Kotlin
-- **Frameworks:** React, SvelteKit, FastAPI, Spring Boot, Node.js, Vite.js, JUnit, pytest
-- **Databases & Tools:** PostgreSQL, MongoDB, SQLite, Qdrant, Docker, Nginx, Git, GitHub Actions, Linux, Azure, Grafana, AppDynamics
-
-### 5. Education
-McMaster University — BEng Software Engineering (Co-op) — May 2028
-Minor in Mathematics
-Relevant coursework: DSA, OOP, Operating Systems, Software Development, Databases, Software Testing
-
-### 6. Contact
-Email, GitHub, LinkedIn — clean centered block, no form needed.
-
----
-
-## Key Metrics to Surface (pulled from resume)
-
-| Metric | Source |
-|---|---|
-| 230K+ messages relayed | Game Chat Bridge |
-| 570K+ API calls at 99%+ success | Game Chat Bridge |
-| 50%+ page count reduction | PCC report generation |
-| 25% fewer DB round trips | PCC SQL migration |
-| 75%+ page load improvement | Jiyash Auto |
-| 90% image size reduction | Jiyash Auto |
-| 70%+ patient review time improvement | Patient Discharge |
-| 90%+ extraction accuracy | Patient Discharge |
-
----
-
-## File Structure
+## File structure
 
 ```
-portfolio/
-  public/
-    resume.pdf           # copy of yash_resume.pdf for download link
-  src/
-    components/
-      Navbar.tsx
-      Hero.tsx
-      Experience.tsx
-      Projects.tsx
-      Skills.tsx
-      Education.tsx
-      Contact.tsx
-      Footer.tsx
-    data/
-      experience.ts      # typed work history objects
-      projects.ts        # typed project objects
-      skills.ts          # skill categories
-    App.tsx
-    main.tsx
-    index.css
-  index.html
-  vite.config.ts
-  tailwind.config.ts
-  tsconfig.json
-  .github/
-    workflows/
-      deploy.yml         # build + push to gh-pages on push to main
+src/
+  components/   Navbar, Hero, Experience, Projects, Gallery, Skills, Education, Contact, Footer
+  data/         site.ts, experience.ts, projects.ts, skills.ts, education.ts
+  hooks/        useReveal.ts (reveal + spotlight)
+  lib/          projectImages.ts (manifest loader)
+  App.tsx  main.tsx  index.css
+public/         resume.pdf, favicon.svg, projects/
+tools/capture/  dev-only image pipeline (own package.json)
 ```
-
----
-
-## Build Order
-
-1. `npm create vite@latest . -- --template react-ts`
-2. Install deps: `tailwindcss framer-motion lucide-react`
-3. Configure Tailwind + custom fonts
-4. Build data files (`experience.ts`, `projects.ts`, `skills.ts`) from resume
-5. Build components bottom-up: Skills → Education → Contact → Projects → Experience → Hero → Navbar → App
-6. Wire animations (Framer Motion `whileInView` on each section)
-7. Copy resume PDF to `public/`
-8. Set up GitHub Actions deploy workflow
-9. Push to GitHub, enable Pages on `gh-pages` branch
-
----
-
-## Deploy Target
-
-`https://yashpatolia.github.io` (requires a repo named `yashpatolia.github.io` on GitHub)
-OR
-`https://yashpatolia.github.io/portfolio` (repo named `portfolio`, set `base: '/portfolio/'` in `vite.config.ts`)

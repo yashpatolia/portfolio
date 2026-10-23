@@ -1,62 +1,26 @@
-import { motion } from 'framer-motion'
 import { skillGroups } from '../data/skills'
-import SectionHeader from './SectionHeader'
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.04 } },
+interface Props {
+  filter: string | null
+  onTag: (tag: string) => void
 }
 
-const item = {
-  hidden: { opacity: 0, y: 10 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 20 } },
-}
-
-export default function Skills() {
+export default function Skills({ filter, onTag }: Props) {
   return (
-    <section id="skills" className="relative py-28 px-6 xl:pl-32 max-w-5xl mx-auto">
-      <SectionHeader n="04" label="Skills" title="What I Use" />
-
-      <div className="grid md:grid-cols-2 gap-px bg-line border border-line rounded-lg overflow-hidden">
-        {skillGroups.map((group) => (
-          <motion.div
-            key={group.label}
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45 }}
-            className="bg-canvas p-5"
-          >
-            <span className="font-mono text-xs tracking-[0.15em] uppercase text-ink-faint">
-              {group.label}
-            </span>
-
-            <motion.div
-              variants={container}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2"
-            >
-              {group.skills.map((skill) => {
-                const Icon = skill.icon
-                return (
-                  <motion.div
-                    key={skill.name}
-                    variants={item}
-                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-md border border-line bg-panel hover:border-signal/40 transition-colors cursor-default group"
-                  >
-                    {Icon && <Icon size={15} style={{ color: skill.iconColor, flexShrink: 0 }} />}
-                    <span className="text-xs text-ink-dim group-hover:text-ink transition-colors truncate">
-                      {skill.name}
-                    </span>
-                  </motion.div>
-                )
-              })}
-            </motion.div>
-          </motion.div>
+    <>
+      <h2 className="h" id="skills">Skills <small>click to filter</small></h2>
+      <div className="bento">
+        {skillGroups.map((g, i) => (
+          <div key={g.label} className="c sk s3" style={{ '--i': i } as React.CSSProperties}>
+            <h4>{g.label}</h4>
+            <div className="tags">
+              {g.skills.map((s) => (
+                <button key={s} type="button" className={`tag${filter === s ? ' act' : ''}`} onClick={() => onTag(s)}>{s}</button>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
-    </section>
+    </>
   )
 }

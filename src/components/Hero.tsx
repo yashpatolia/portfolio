@@ -1,113 +1,120 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { Github, Linkedin, FileText } from 'lucide-react'
-import MagneticLink from './MagneticLink'
+import { useEffect, useRef, useState } from 'react'
+import { site } from '../data/site'
+import { projects } from '../data/projects'
+import { skillGroups } from '../data/skills'
 
-const taglines = ['Software Engineer', 'Backend Developer', 'Full-Stack Builder']
-const resumeHref = `${import.meta.env.BASE_URL}resume.pdf`
+const highlight = projects[0].metrics[0]
+const marquee = skillGroups.flatMap((g) => g.skills)
+
+function useCountUp(to: number) {
+  const ref = useRef<HTMLElement>(null)
+  const [n, setN] = useState(0)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+    const io = new IntersectionObserver((es) => {
+      if (!es[0].isIntersecting) return
+      io.disconnect()
+      if (reduce) { setN(to); return }
+      const t0 = performance.now()
+      const step = (t: number) => {
+        const p = Math.min(1, (t - t0) / 1600)
+        setN(Math.round(to * (1 - Math.pow(1 - p, 3))))
+        if (p < 1) requestAnimationFrame(step)
+      }
+      requestAnimationFrame(step)
+    })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [to])
+  return [ref, n] as const
+}
+
+function RoleCycle() {
+  const [i, setI] = useState(0)
+  useEffect(() => {
+    const id = setInterval(() => setI((v) => (v + 1) % site.roles.length), 2600)
+    return () => clearInterval(id)
+  }, [])
+  return (
+    <div className="rolebox" aria-live="off">
+      {site.roles.map((r, k) => (
+        <span key={r} className={k === i ? 'on' : undefined}>{r}</span>
+      ))}
+    </div>
+  )
+}
+
+function Clock() {
+  const [now, setNow] = useState(() => new Date())
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 10_000)
+    return () => clearInterval(id)
+  }, [])
+  const tz = 'America/Toronto'
+  return (
+    <>
+      <div className="t">{now.toLocaleTimeString('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit' })}</div>
+      <div style={{ marginTop: 6, color: 'var(--mute)' }}>
+        {now.toLocaleDateString('en-CA', { timeZone: tz, weekday: 'long', month: 'long', day: 'numeric' })}
+      </div>
+    </>
+  )
+}
 
 export default function Hero() {
-  const [taglineIndex, setTaglineIndex] = useState(0)
-  const [displayed, setDisplayed] = useState('')
-  const [deleting, setDeleting] = useState(false)
-
-  useEffect(() => {
-    const target = taglines[taglineIndex]
-    if (!deleting && displayed.length < target.length) {
-      const t = setTimeout(() => setDisplayed(target.slice(0, displayed.length + 1)), 70)
-      return () => clearTimeout(t)
-    }
-    if (!deleting && displayed.length === target.length) {
-      const t = setTimeout(() => setDeleting(true), 2200)
-      return () => clearTimeout(t)
-    }
-    if (deleting && displayed.length > 0) {
-      const t = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 40)
-      return () => clearTimeout(t)
-    }
-    if (deleting && displayed.length === 0) {
-      setDeleting(false)
-      setTaglineIndex((i) => (i + 1) % taglines.length)
-    }
-  }, [displayed, deleting, taglineIndex])
-
+  const [cntRef, n] = useCountUp(highlight.value)
+  const doubled = [...marquee, ...marquee]
   return (
-    <section id="top" className="relative min-h-screen flex items-center px-6 xl:pl-32 max-w-5xl mx-auto">
-      <div className="w-full">
-          <div className="relative overflow-hidden mb-5 inline-block">
-            <h1 className="font-display text-6xl sm:text-7xl md:text-8xl font-medium leading-none tracking-tight text-ink">
-              Yash Patolia
-            </h1>
-            <motion.span
-              aria-hidden
-              initial={{ scaleX: 1 }}
-              animate={{ scaleX: 0 }}
-              transition={{ duration: 0.7, delay: 0.1, ease: [0.76, 0, 0.24, 1] }}
-              style={{ transformOrigin: 'right' }}
-              className="absolute inset-0 bg-signal"
-            />
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="h-7 flex items-center mb-3"
-          >
-            <span className="font-mono text-base text-signal">
-              {displayed}
-              <motion.span
-                className="inline-block w-px h-4 bg-signal ml-0.5 align-middle"
-                animate={{ opacity: [1, 0] }}
-                transition={{ repeat: Infinity, duration: 0.8, ease: 'steps(1)' }}
-              />
-            </span>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            className="font-mono text-sm text-ink-faint mb-10"
-          >
-            McMaster University &middot; Software Engineering Co-op
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.35 }}
-            className="flex items-center gap-3 flex-wrap"
-          >
-            <a
-              href="https://github.com/yashpatolia"
-              target="_blank"
-              rel="noreferrer"
-              className="group flex items-center gap-2 px-4 py-2 border border-line text-ink-dim rounded-md hover:border-line-bright hover:text-ink active:scale-[0.97] transition-all text-sm"
-            >
-              <Github size={15} className="transition-transform group-hover:rotate-[-8deg]" />
-              GitHub
-            </a>
-            <a
-              href="https://linkedin.com/in/yash-patolia"
-              target="_blank"
-              rel="noreferrer"
-              className="group flex items-center gap-2 px-4 py-2 border border-line text-ink-dim rounded-md hover:border-line-bright hover:text-ink active:scale-[0.97] transition-all text-sm"
-            >
-              <Linkedin size={15} className="transition-transform group-hover:rotate-[-8deg]" />
-              LinkedIn
-            </a>
-            <MagneticLink
-              href={resumeHref}
-              target="_blank"
-              rel="noreferrer"
-              className="group flex items-center gap-2 px-4 py-2 bg-signal text-canvas rounded-md hover:bg-signal-dim transition-colors text-sm font-medium"
-            >
-              <FileText size={15} className="transition-transform group-hover:-translate-y-0.5" />
-              Resume
-            </MagneticLink>
-          </motion.div>
+    <div className="bento" id="top">
+      <div className="c name s8" style={{ '--i': 0 } as React.CSSProperties}>
+        <div className="mesh" aria-hidden><i /><i /><i /></div>
+        <div>
+          <div className="lbl">Software engineer</div>
+          <RoleCycle />
+        </div>
+        <h1>Yash<br /><em>Patolia</em></h1>
       </div>
-    </section>
+
+      <div className="c bio s4" style={{ '--i': 1 } as React.CSSProperties}>
+        <div className="lbl">About</div>
+        <p>{site.bio}</p>
+        <div className="lbl" style={{ marginTop: 22 }}>McMaster &middot; Software Eng. Co-op</div>
+      </div>
+
+      <div className="c big s3" style={{ '--i': 2 } as React.CSSProperties}>
+        <div className="lbl">Highlight</div>
+        <div>
+          <b ref={cntRef}>{n}{highlight.suffix}</b>
+          <div style={{ marginTop: 6 }}>{highlight.label} by {projects[0].name}</div>
+        </div>
+      </div>
+
+      <div className="c now s3" style={{ '--i': 3 } as React.CSSProperties}>
+        <div className="lbl">Now</div>
+        <div>
+          <h3>Study term</h3>
+          <div>Back at McMaster after a PointClickCare internship, May to Aug 2026</div>
+        </div>
+      </div>
+
+      <div className="c clock s3" style={{ '--i': 4 } as React.CSSProperties}>
+        <div className="lbl">Local time</div>
+        <div><Clock /></div>
+      </div>
+
+      <div className="c s3" style={{ '--i': 5 } as React.CSSProperties}>
+        <a className="lk" href={site.github} target="_blank" rel="noreferrer">GitHub <span>&#8599;</span></a>
+        <a className="lk" href={site.linkedin} target="_blank" rel="noreferrer">LinkedIn <span>&#8599;</span></a>
+        <a className="lk p" href={site.resume} download>Resume <span>&#8595;</span></a>
+      </div>
+
+      <div className="c mq s12" style={{ padding: '22px 0' }} aria-hidden>
+        <div className="tr">
+          {doubled.map((s, i) => <span key={i}>{s}</span>)}
+        </div>
+      </div>
+    </div>
   )
 }

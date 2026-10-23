@@ -1,0 +1,131 @@
+{
+  "game-chat-bridge": [
+    {
+      "src": "/projects/game-chat-bridge-1.webp",
+      "small": "/projects/game-chat-bridge-1-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Live guild chat relayed from Minecraft"
+    },
+    {
+      "src": "/projects/game-chat-bridge-2.webp",
+      "small": "/projects/game-chat-bridge-2-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Guild member table with Discord links and stats"
+    },
+    {
+      "src": "/projects/game-chat-bridge-3.webp",
+      "small": "/projects/game-chat-bridge-3-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Message leaderboard"
+    },
+    {
+      "src": "/projects/game-chat-bridge-4.webp",
+      "small": "/projects/game-chat-bridge-4-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Dye collection tracker"
+    }
+  ],
+  "tracklane": [
+    {
+      "src": "/projects/tracklane-1.webp",
+      "small": "/projects/tracklane-1-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Tracklane application board with stats and pipeline"
+    },
+    {
+      "src": "/projects/tracklane-2.webp",
+      "small": "/projects/tracklane-2-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Tracklane new entry dialog"
+    }
+  ],
+  "anidex": [
+    {
+      "src": "/projects/anidex-1.webp",
+      "small": "/projects/anidex-1-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Anidex home page with a trending carousel"
+    },
+    {
+      "src": "/projects/anidex-2.webp",
+      "small": "/projects/anidex-2-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Anidex browse page"
+    },
+    {
+      "src": "/projects/anidex-3.webp",
+      "small": "/projects/anidex-3-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Anidex seasonal chart"
+    },
+    {
+      "src": "/projects/anidex-4.webp",
+      "small": "/projects/anidex-4-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "An anime detail page on Anidex"
+    }
+  ],
+  "interview-prep": [
+    {
+      "src": "/projects/interview-prep-1.webp",
+      "small": "/projects/interview-prep-1-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "A two pointers lesson with diagrams"
+    },
+    {
+      "src": "/projects/interview-prep-2.webp",
+      "small": "/projects/interview-prep-2-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "A trees lesson with worked examples"
+    },
+    {
+      "src": "/projects/interview-prep-3.webp",
+      "small": "/projects/interview-prep-3-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "The track picker: data structures and quant trading"
+    }
+  ],
+  "celestial": [
+    {
+      "src": "/projects/celestial-1.webp",
+      "small": "/projects/celestial-1-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Weight command: skills, dungeons and slayers (mockup)"
+    },
+    {
+      "src": "/projects/celestial-2.webp",
+      "small": "/projects/celestial-2-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Catacombs command: class levels and progress (mockup)"
+    },
+    {
+      "src": "/projects/celestial-3.webp",
+      "small": "/projects/celestial-3-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Bazaar command: instant buy and sell prices (mockup)"
+    },
+    {
+      "src": "/projects/celestial-4.webp",
+      "small": "/projects/celestial-4-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Help command listing every command (mockup)"
+    }
+  ]
+}

@@ -1,31 +1,35 @@
+import { useState } from 'react'
 import Navbar from './components/Navbar'
-import ScrollRail from './components/ScrollRail'
-import OrbField from './components/OrbField'
 import Hero from './components/Hero'
 import Experience from './components/Experience'
 import Projects from './components/Projects'
-import Extras from './components/Extras'
 import Skills from './components/Skills'
-import Education from './components/Education'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import { useReveal, useSpotlight } from './hooks/useReveal'
 
 export default function App() {
+  const [filter, setFilter] = useState<string | null>(null)
+  useReveal()
+  useSpotlight()
+
+  const toggleTag = (tag: string) => {
+    const next = filter === tag ? null : tag
+    setFilter(next)
+    if (next) document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
-    <div className="relative">
-      <OrbField />
+    <>
       <Navbar />
-      <ScrollRail />
-      <main className="relative z-10">
+      <main>
         <Hero />
         <Experience />
-        <Projects />
-        <Extras />
-        <Skills />
-        <Education />
+        <Projects filter={filter} onTag={toggleTag} onClear={() => setFilter(null)} />
+        <Skills filter={filter} onTag={toggleTag} />
         <Contact />
+        <Footer />
       </main>
-      <Footer />
-    </div>
+    </>
   )
 }
