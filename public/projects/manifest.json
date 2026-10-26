@@ -5,28 +5,49 @@
       "small": "/projects/game-chat-bridge-1-sm.webp",
       "width": 1312,
       "height": 909,
-      "alt": "Live guild chat relayed from Minecraft"
+      "alt": "Landing page: run the guild calmly"
     },
     {
       "src": "/projects/game-chat-bridge-2.webp",
       "small": "/projects/game-chat-bridge-2-sm.webp",
       "width": 1312,
       "height": 909,
-      "alt": "Guild member table with Discord links and stats"
+      "alt": "Guild overview: activity, average level, needs-attention list and top climbers"
     },
     {
       "src": "/projects/game-chat-bridge-3.webp",
       "small": "/projects/game-chat-bridge-3-sm.webp",
       "width": 1312,
       "height": 909,
-      "alt": "Message leaderboard"
+      "alt": "Live guild chat relayed between Minecraft and Discord"
     },
     {
       "src": "/projects/game-chat-bridge-4.webp",
       "small": "/projects/game-chat-bridge-4-sm.webp",
       "width": 1312,
       "height": 909,
-      "alt": "Dye collection tracker"
+      "alt": "Member table with Discord links, activity tiers and status filters"
+    },
+    {
+      "src": "/projects/game-chat-bridge-5.webp",
+      "small": "/projects/game-chat-bridge-5-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Leaderboards: fastest climbers and highest levels"
+    },
+    {
+      "src": "/projects/game-chat-bridge-6.webp",
+      "small": "/projects/game-chat-bridge-6-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Guild config: rank requirements, attention rules and activity tiers"
+    },
+    {
+      "src": "/projects/game-chat-bridge-7.webp",
+      "small": "/projects/game-chat-bridge-7-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "The same overview in the dark theme"
     }
   ],
   "tracklane": [
@@ -126,6 +147,43 @@
       "width": 1312,
       "height": 909,
       "alt": "Help command listing every command (mockup)"
+    }
+  ],
+  "bellhop": [
+    {
+      "src": "/projects/bellhop-1.webp",
+      "small": "/projects/bellhop-1-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Landing page: the call bell, answered"
+    },
+    {
+      "src": "/projects/bellhop-2.webp",
+      "small": "/projects/bellhop-2-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Live nurse dashboard with an escalated emergency, the conversation and the robot fleet"
+    },
+    {
+      "src": "/projects/bellhop-3.webp",
+      "small": "/projects/bellhop-3-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Dispatch: pick a room, then send a free robot to it"
+    },
+    {
+      "src": "/projects/bellhop-4.webp",
+      "small": "/projects/bellhop-4-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Resident profile with habits, tendencies and what the robot has learned"
+    },
+    {
+      "src": "/projects/bellhop-5.webp",
+      "small": "/projects/bellhop-5-sm.webp",
+      "width": 1312,
+      "height": 909,
+      "alt": "Insights: calls handled by the robot, nurse time saved and response time target"
     }
   ]
 }

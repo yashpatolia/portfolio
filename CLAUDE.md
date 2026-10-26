@@ -16,7 +16,7 @@ Email: `yashpatolia1@gmail.com`
 | Framework | Vite + React 18 + TypeScript |
 | Styling | Tailwind CSS v3 + hand-written CSS in `src/index.css` |
 | Motion | CSS keyframes / transitions + small IntersectionObserver hooks. No animation library. |
-| Icons | None. Typographic glyphs (↗ → ●) only. |
+| Icons | Small inline SVGs in the component (no icon library) for the GitHub, LinkedIn and Resume links; typographic glyphs (↗ ↓ ●) elsewhere. |
 | Deploy | GitHub Actions → VPS (`.github/workflows/deploy.yml`, `scripts/deploy-vps.sh`) |
 
 ---
@@ -72,8 +72,8 @@ with a few well-chosen interactions. Light and dark themes (toggle in the nav, s
   tiles, compact accordion for projects (collapsed rows with a thumbnail and one-line
   summary, open to a gallery plus details).
 - **Motion**: staggered tile reveal on scroll (IntersectionObserver sets `data-in`),
-  cursor spotlight inside tiles, animated mesh in the hero, count-up on the highlight number,
-  skills marquee, gallery crossfade with progress dots. Always honor `prefers-reduced-motion`.
+  cursor spotlight inside tiles, animated mesh in the hero, a Spotify "On repeat" tile
+  (track id in `Hero.tsx`), skills marquee, gallery crossfade with progress dots. Always honor `prefers-reduced-motion`.
 - **Interactions**: clicking any skill or stack tag filters the project list; project
   galleries support dots, arrows, swipe and arrow keys.
 - **Content-first rules**: real copy and metrics live in `src/data/*`. Never invent
@@ -88,7 +88,7 @@ with a few well-chosen interactions. Light and dark themes (toggle in the nav, s
 ---
 
 ## Sections
-Hero tiles (name, about, highlight, now, local time, links, skills marquee) · Experience ·
+Hero tiles (name, about, on repeat, now, local time, links, skills marquee) · Experience ·
 Projects · Skills · Education and Contact (+ Footer)
 
 Content lives in `src/data/` as typed plain data: `site.ts`, `experience.ts`, `projects.ts`,

@@ -69,6 +69,24 @@ export const projects: Project[] = [
     ],
   },
   {
+    name: 'Bellhop',
+    slug: 'bellhop',
+    note: 'Cal Hacks 13.0',
+    summary: 'Robot fleet that answers non-urgent call bells in care homes and escalates urgent ones to nurses.',
+    description:
+      'An autonomous robot fleet built at Cal Hacks 13.0 that answers non-urgent care home call bells, scores each call for urgency, and alerts a nurse only when something needs one. A FastAPI backend dispatches the nearest free robot, a Raspberry Pi handles speech and driving, and a live React dashboard keeps nurses in control.',
+    stack: ['Python', 'FastAPI', 'React', 'TypeScript', 'Raspberry Pi', 'SpacetimeDB'],
+    metrics: [
+      { value: 40, suffix: '%', label: 'of calls resolved by the robot alone' },
+      { value: 100, suffix: '%', label: 'of urgent calls escalated to a nurse' },
+      { prefix: '~', value: 5, suffix: ' hrs', label: 'nurse time saved per 8-hr shift' },
+    ],
+    links: [
+      { label: 'Devpost', url: 'https://devpost.com/software/bellhop' },
+      { label: 'Repo', url: 'https://github.com/yashpatolia/bellhop' },
+    ],
+  },
+  {
     name: 'Celestial',
     slug: 'celestial',
     summary: 'Discord bot for Hypixel Skyblock player stats, weight and market prices.',

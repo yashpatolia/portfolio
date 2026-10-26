@@ -34,20 +34,39 @@ const RANKS = ['Guild Master', 'Officer', 'Officer', 'Veteran', 'Veteran', 'Vete
 const HANDLES = ['pixelfern', 'cobaltmoth', 'tidalrook', 'ashenquill', 'nimbustea', 'glitch.otter', 'mossy_lantern', 'velvetanvil', 'solarpickle', 'hushedcomet', 'bramblepaw', 'ironlullaby', 'quartzheron', 'duskcrumpet', 'tinselwolf', 'fableknot', 'orbitmuffin', 'slatewren', 'cinderbloom', 'maple', 'juniperash', 'pocketnova', 'willowbyte', 'rustyhalo'];
 const fakeUuid = (n) => { let h = ''; for (let i = 0; h.length < 32; i++) h += (hash(n + i) >>> 0).toString(16).padStart(8, '0'); h = h.slice(0, 32); return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`; };
 const NOW = Date.now();
+const DAY = 86400000;
+const OFFLINE_DAYS = { 20: 6, 21: 16, 22: 34, 23: 68 }; // lowest-level players, so the attention lists have content
 const members = (off) => IGNS.map((ign, i) => {
   const dn = HANDLES[i];
   const linked = i % 5 !== 4;
   const k = (i + off) % IGNS.length;
+  const m90 = 4200 - i * 173 + k * 11;
+  const last = i % 3 === 0 ? 120000 : (OFFLINE_DAYS[i] ? OFFLINE_DAYS[i] * DAY : (i + 1) * 5400000);
   return {
     rank: RANKS[i], ign, uuid: fakeUuid(ign), discord_name: linked ? dn : null, discord_id: linked ? String(1000 + i) : null, discord_avatar: linked ? discordAvatar(dn) : null,
-    online: i % 3 === 0, skyblock_level: 280 - i * 7 + ((k * 5) % 11), last_login: NOW - (i % 3 === 0 ? 120000 : (i + 1) * 5400000), stats_fetched_at: NOW - 600000,
-    messages_90d: 4200 - i * 173 + k * 11, level_gain_90d: 18 - (i % 9) + (k % 4), level_gain_days: 90,
+    online: i % 3 === 0, skyblock_level: 280 - i * 7 + ((k * 5) % 11), last_login: NOW - last, stats_fetched_at: NOW - 600000,
+    messages_90d: m90, messages_total: m90 * 3 + 800 + i * 40, is_bot: false,
+    excused: ign === 'SlateWren' ? { reason: 'Exam season', until: new Date(NOW + 20 * DAY).toISOString().slice(0, 10), by: 'maple' } : null,
+    level_gain_90d: 18 - (i % 9) + (k % 4), level_gain_days: 90,
   };
 });
+const isoDay = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const activityPoints = () => { const end = new Date(); end.setMinutes(0, 0, 0); return Array.from({ length: 24 }, (_, h) => { const t = new Date(end.getTime() - (23 - h) * 3600000); const hr = t.getHours(); const base = 4 + 10 * Math.exp(-Math.pow((hr - 20) / 4.2, 2)) + 3 * Math.exp(-Math.pow((hr - 13) / 3, 2)); return { t: t.toISOString(), online: Math.round(base + ((hash('h' + h) % 3) - 1)) }; }); };
+const levelTrend = () => Array.from({ length: 30 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() - (29 - i)); return { t: isoDay(d), avg: +(188.4 + i * 0.22 + Math.sin(i / 3) * 0.25).toFixed(2), members: IGNS.length }; });
+const person = (x, gain) => ({ ign: x.ign, rank: x.rank, level: x.skyblock_level, uuid: x.uuid, discord_name: x.discord_name, discord_avatar: x.discord_avatar, gain, days_covered: 30 });
+const levelBoard = (days) => { const ms = members(0); return { days, top: [...ms].sort((a, b) => b.skyblock_level - a.skyblock_level).slice(0, 10).map((x) => person(x, null)), climbers: [...ms].sort((a, b) => b.level_gain_90d - a.level_gain_90d).slice(0, 10).map((x) => person(x, +(x.level_gain_90d * days / 90).toFixed(1))) }; };
+const GUILD_CONFIG = {
+  ranks: [{ key: 'member', label: 'Member', level: 0, default_level: 0, editable: false }, { key: 'veteran', label: 'Veteran', level: 150, default_level: 150, editable: true }, { key: 'officer', label: 'Officer', level: 220, default_level: 220, editable: true }, { key: 'guild_master', label: 'Guild Master', level: 260, default_level: 260, editable: true }],
+  attention: { kick_risk_days: 60, inactive_days: 30, low_activity_days: 14, bottom_n: 20, stale_hours: 2, level_drop: 0 },
+  attention_defaults: { kick_risk_days: 60, inactive_days: 30, low_activity_days: 14, bottom_n: 20, stale_hours: 2, level_drop: 0 },
+  activity: { d90: { red: 10, yellow: 100, green: 250, blue: 500, white: 1000 }, total: { red: 50, yellow: 500, green: 1250, blue: 2500, white: 5000 } },
+  activity_defaults: { d90: { red: 10, yellow: 100, green: 250, blue: 500, white: 1000 }, total: { red: 50, yellow: 500, green: 1250, blue: 2500, white: 5000 } },
+  updated_by: 'maple', updated_at: new Date(NOW - 3 * DAY).toISOString(),
+};
 const CHAT = [['14:02', 'PixelFern', 'anyone up for a dungeon run?'], ['14:03', 'CobaltMoth', 'give me 5 min, finishing a slayer'], ['14:03', 'TidalRook', 'gg on the f7 earlier everyone'], ['14:05', 'AshenQuill', 'new guild event this weekend, details in the announcements'], ['14:06', 'NimbusTea', 'just hit level 250, thanks for the carry'], ['14:08', 'GlitchOtter', '.lvl MossyLantern'], ['14:08', 'MossyLantern', 'level 241 checking in'], ['14:11', 'VelvetAnvil', 'who wants to farm mining for the lobby?'], ['14:12', 'SolarPickle', 'in, joining now'], ['14:15', 'HushedComet', 'welcome to the guild BramblePaw'], ['14:16', 'BramblePaw', 'thanks! glad to be here'], ['14:18', 'IronLullaby', 'bumble university is hosting a dungeon night friday'], ['14:21', 'QuartzHeron', 'count me in'], ['14:22', 'DuskCrumpet', 'same, bringing two friends'], ['14:25', 'TinselWolf', '.nw FableKnot'], ['14:26', 'FableKnot', 'networth is climbing nicely']];
 const DYES = ['Aquamarine', 'Bone', 'Brick Red', 'Byzantium', 'Carmine', 'Celadon', 'Celeste', 'Chocolate', 'Copper', 'Cyclamen', 'Dark Purple', 'Dung', 'Emerald', 'Flame', 'Fossil', 'Frog', 'Holly', 'Iceberg', 'Jade', 'Lava', 'Midnight', 'Mocha', 'Nadeshiko', 'Necron', 'Pearlescent', 'Pelt', 'Periwinkle', 'Rose', 'Sangria', 'Tentacle'].map((n, i) => ({ dye_id: 'dye' + i, dye_name: n, hex: '#' + ((hash(n) & 0xffffff) | 0x404040).toString(16).slice(0, 6).padStart(6, '4'), weight: 100 - i * 3, odds: '1 in ' + (200 + i * 450).toLocaleString('en-US'), unlocked: i % 3 !== 1 }));
 
-const ME = { discord_id: '1', discord_name: 'maple', is_admin: true, can_control_bots: true, can_fetch_api: true, can_manage_links: true, avatar_url: discordAvatar('maple'), is_owner: true };
+const ME = { discord_id: '1', discord_name: 'maple', is_admin: true, can_control_bots: true, can_fetch_api: true, can_manage_links: true, can_manage_members: true, can_manage_config: true, avatar_url: discordAvatar('maple'), is_owner: true };
 const BOTS = { bk: { key: 'bk', name: 'Bumble Kindergarten', short_name: 'BK', username: 'BumbleKG', connected: true }, bu: { key: 'bu', name: 'Bumble University', short_name: 'BU', username: 'BumbleUni', connected: true } };
 
 async function mockBumble(page) {
@@ -66,6 +85,10 @@ async function mockBumble(page) {
     if ((m = p.match(/^\/api\/bots\/(\w+)\/overview$/))) return json({ ...BOTS[m[1]], member_count: IGNS.length, recent_chat: CHAT.map(([time, player, message]) => ({ time, player, message })) });
     if ((m = p.match(/^\/api\/bots\/(\w+)\/members$/))) return json({ members: members(m[1] === 'bk' ? 0 : 5) });
     if ((m = p.match(/^\/api\/bots\/(\w+)\/leaderboard$/))) return json({ leaderboard: members(0).sort((a, b) => b.messages_90d - a.messages_90d).map((x) => ({ ign: x.ign, count: x.messages_90d, uuid: x.uuid, discord_name: x.discord_name, discord_id: x.discord_id, discord_avatar: x.discord_avatar })) });
+    if ((m = p.match(/^\/api\/bots\/(\w+)\/activity$/))) return json({ points: activityPoints() });
+    if ((m = p.match(/^\/api\/bots\/(\w+)\/level-trend$/))) return json({ points: levelTrend() });
+    if ((m = p.match(/^\/api\/bots\/(\w+)\/level-leaderboard$/))) return json(levelBoard(+(u.searchParams.get('days') || 30)));
+    if ((m = p.match(/^\/api\/bots\/(\w+)\/config$/))) return json(GUILD_CONFIG);
     if (p === '/api/dyes/me') return json({ linked: true, uuid: fakeUuid('MapleSprite'), ign: 'MapleSprite', discord_name: 'maple', discord_avatar: discordAvatar('maple'), dyes: DYES });
     if (p === '/api/dyes/recent') return json({ drops: DYES.filter((d) => d.unlocked).slice(0, 8).map((d, i) => ({ dye_id: d.dye_id, dye_name: d.dye_name, hex: d.hex, unlocked_at: new Date(NOW - i * 3600000 * 5).toISOString(), uuid: fakeUuid(IGNS[i]), ign: IGNS[i], discord_name: HANDLES[i], discord_avatar: discordAvatar(HANDLES[i]) })) });
     if (p === '/api/dyes/search') return json({ results: [] });
@@ -77,13 +100,22 @@ async function mockBumble(page) {
 
 export const bumble = {
   slug: 'game-chat-bridge', title: 'Game Chat Bridge', host: 'bumble.seazyns.dev',
-  server: { cwd: '/Users/yashpatolia/Documents/github/bumble-unified/frontend', cmd: 'npx', args: ['vite', '--port', '5175', '--strictPort'], url: 'http://localhost:5175/' },
+  server: { cwd: '/Users/yashpatolia/Documents/github/bumble-unified/frontend', cmd: 'npx', args: ['vite', '--port', '5185', '--strictPort'], url: 'http://localhost:5185/' },
   prepare: mockBumble,
   scenes: [
-    { alt: 'Live guild chat relayed from Minecraft', run: async (p) => { await p.goto('http://localhost:5175/guilds/bk'); await settle(p); } },
-    { alt: 'Guild member table with Discord links and stats', run: async (p) => { await p.goto('http://localhost:5175/guilds/bk/members'); await settle(p); } },
-    { alt: 'Message leaderboard', run: async (p) => { await p.goto('http://localhost:5175/guilds/bk/leaderboard'); await settle(p); } },
-    { alt: 'Dye collection tracker', run: async (p) => { await p.goto('http://localhost:5175/dyes'); await settle(p); } },
+    // Signed-out landing page: opened in a fresh page of the same context because the mocked page always carries a token.
+    { alt: 'Landing page: run the guild calmly', run: async (p) => {
+        const q = await p.context().newPage();
+        await q.goto('http://localhost:5185/'); await settle(q, 1200);
+        await q.evaluate(() => { for (const b of document.querySelectorAll('button, a')) if (/dev only/i.test(b.textContent || '')) b.style.display = 'none'; });
+        return q; } },
+    { alt: 'Guild overview: activity, average level, needs-attention list and top climbers', run: async (p) => { await p.goto('http://localhost:5185/guilds/bk'); await settle(p, 1400); } },
+    { alt: 'Live guild chat relayed between Minecraft and Discord', run: async (p) => { await p.goto('http://localhost:5185/guilds/bk'); await settle(p, 1000);
+        await p.evaluate(() => { const h = [...document.querySelectorAll('.card-title')].find((e) => e.textContent === 'Guild chat'); h?.scrollIntoView({ block: 'start' }); window.scrollBy(0, -110); }); await sleep(600); } },
+    { alt: 'Member table with Discord links, activity tiers and status filters', run: async (p) => { await p.goto('http://localhost:5185/guilds/bk/members'); await settle(p, 1000); } },
+    { alt: 'Leaderboards: fastest climbers and highest levels', run: async (p) => { await p.goto('http://localhost:5185/guilds/bk/leaderboard'); await settle(p, 1000); } },
+    { alt: 'Guild config: rank requirements, attention rules and activity tiers', run: async (p) => { await p.goto('http://localhost:5185/guilds/bk/config'); await settle(p, 1000); } },
+    { alt: 'The same overview in the dark theme', run: async (p) => { await p.goto('http://localhost:5185/guilds/bk'); await settle(p, 1000); await p.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark')); await sleep(1100); } },
   ],
 };
 

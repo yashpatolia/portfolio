@@ -8,7 +8,8 @@ export const EXE = process.env.CHROMIUM_PATH || CACHE + 'chromium_headless_shell
 
 export const VIEW = { width: 1440, height: 900 };
 export const launch = () => chromium.launch({ executablePath: EXE });
-export const newPage = (browser, extra = {}) => browser.newPage({ viewport: VIEW, deviceScaleFactor: 2, ...extra });
+// A real context (not browser.newPage) so scenes can open sibling pages with page.context().newPage().
+export const newPage = async (browser, extra = {}) => (await browser.newContext({ viewport: VIEW, deviceScaleFactor: 2, ...extra })).newPage();
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -25,6 +26,8 @@ export async function waitFor(url, tries = 60) {
 
 // Spawn a dev server, resolve once its URL answers. Returns a stop() function.
 export async function serve({ cwd, cmd, args, env = {}, url }) {
+  // Never reuse a port something else already answers on: it could be an unrelated app.
+  if (await ping(url)) throw new Error('Port already in use, refusing to capture: ' + url);
   const child = spawn(cmd, args, { cwd, env: { ...process.env, ...env }, stdio: 'ignore', detached: true });
   const stop = () => { try { process.kill(-child.pid, 'SIGTERM'); } catch {} };
   process.on('exit', stop);

@@ -9,9 +9,10 @@ import { frameAll } from './frame.mjs';
 import { anidex, interview } from './scenes-live.mjs';
 import { bumble, tracklane } from './scenes-local.mjs';
 import { celestial } from './scenes-mock.mjs';
+import { bellhop } from './scenes-bellhop.mjs';
 
 const OUT_DIR = path.resolve('../../public/projects');
-const projects = [bumble, tracklane, anidex, interview, celestial];
+const projects = [bumble, tracklane, anidex, interview, celestial, bellhop];
 const args = process.argv.slice(2);
 const frameOnly = args.includes('--frame-only');
 const only = args.filter((a) => !a.startsWith('--'));
@@ -28,8 +29,10 @@ if (!frameOnly) {
     const page = await newPage(browser);
     if (proj.prepare) await proj.prepare(page);
     for (let i = 0; i < proj.scenes.length; i++) {
-      await proj.scenes[i].run(page);
-      await page.screenshot({ path: `out/raw/${proj.slug}-${i + 1}.png` });
+      // A scene may hand back a different page to photograph (for example a signed-out one).
+      const shot = (await proj.scenes[i].run(page)) || page;
+      await shot.screenshot({ path: `out/raw/${proj.slug}-${i + 1}.png` });
+      if (shot !== page) await shot.close();
       console.log('  shot', i + 1);
     }
     await page.close();
