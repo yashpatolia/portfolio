@@ -69,9 +69,22 @@ main { padding: 92px var(--pad) 40px; }
 .lk:hover { background: var(--ink); color: var(--bg); padding-left: 30px; }
 .lk.p { background: var(--sage); color: #14170f; }
 .lk.p:hover { background: var(--ink); color: var(--bg); }
+.links { display: flex; flex-direction: column; justify-content: space-between; gap: 8px; }
+.links .lk { margin-bottom: 0; }
+.lk-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.lk-row .lk { padding: 16px 12px; justify-content: center; font-size: 0.95rem; }
+.lk-row .lk:hover { padding-left: 12px; }
+@media (min-width: 901px) and (max-width: 1250px) { .lk-row .lk { flex-direction: column; gap: 6px; padding: 14px 6px; } }
 .lt { display: flex; align-items: center; gap: 12px; }
 .lt svg { width: 20px; height: 20px; flex: none; }
 .tune { display: flex; flex-direction: column; justify-content: space-between; gap: 14px; background: var(--clay-s); }
+.tl { display: flex; align-items: center; gap: 10px; }
+.eq { display: inline-flex; align-items: flex-end; gap: 2px; height: 13px; }
+.eq i { width: 3px; height: 100%; border-radius: 2px; background: var(--sage); transform-origin: bottom; animation: eq 0.9s ease-in-out infinite alternate; }
+.eq i:nth-child(2) { animation-delay: -0.3s; } .eq i:nth-child(3) { animation-delay: -0.6s; } .eq i:nth-child(4) { animation-delay: -0.15s; }
+@keyframes eq { from { transform: scaleY(0.25); } to { transform: scaleY(1); } }
+.tl svg { width: 14px; height: 14px; flex: none; }
+@media (prefers-reduced-motion: reduce) { .eq i { animation: none; transform: scaleY(0.7); } }
 .tune iframe { display: block; border: 0; border-radius: 14px; color-scheme: normal; }
 .now { background: var(--clay-s); display: flex; flex-direction: column; justify-content: space-between; }
 .now h3 { font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(1.9rem, 2.4vw, 2.6rem); line-height: 1.05; letter-spacing: -0.02em; margin: 10px 0 4px; }
@@ -81,8 +94,10 @@ main { padding: 92px var(--pad) 40px; }
 .mq .tr { display: flex; width: max-content; animation: sl 50s linear infinite; }
 .mq:hover .tr { animation-play-state: paused; }
 @keyframes sl { to { transform: translateX(-50%); } }
-.mq span { font-family: 'Newsreader', serif; font-size: clamp(2.2rem, 4vw, 4rem); letter-spacing: -0.025em; padding: 0 26px; white-space: nowrap; }
-.mq span::after { content: '\2726'; color: var(--clay); margin-left: 52px; font-size: 0.5em; vertical-align: middle; }
+/* One spacing value (--g) sits between the previous word and the icon and between the icon and its own word. */
+.mq { --g: clamp(18px, 1.9vw, 30px); }
+.mq span { display: inline-flex; align-items: center; gap: var(--g); margin-right: var(--g); font-family: 'Newsreader', serif; font-size: clamp(2.2rem, 4vw, 4rem); letter-spacing: -0.025em; padding: 0; white-space: nowrap; }
+.mq .ico { flex: none; width: 0.68em; height: 0.68em; transform: translateY(-0.08em); background: var(--clay); -webkit-mask: var(--ic) center / contain no-repeat; mask: var(--ic) center / contain no-repeat; }
 
 /* section headings */
 .h { font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(2.6rem, 5.4vw, 5rem); letter-spacing: -0.03em; line-height: 1; margin: clamp(48px, 8vh, 96px) 6px 24px; display: flex; align-items: baseline; flex-wrap: wrap; gap: 16px; }
@@ -94,6 +109,13 @@ main { padding: 92px var(--pad) 40px; }
 
 /* experience */
 .exp h3 { font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(2rem, 2.6vw, 2.8rem); line-height: 1.05; letter-spacing: -0.02em; margin: 10px 0 2px; }
+.exp .xh { display: flex; align-items: stretch; gap: 18px; }
+.exp .xt { min-width: 0; }
+/* The logo stretches to the height of the date, company and role lines; width follows the square aspect ratio. */
+.exp .xlogo { flex: none; display: block; align-self: stretch; width: auto; height: auto; aspect-ratio: 1; max-width: 104px; object-fit: contain; object-position: left center; }
+.exp .xt .rl { margin-bottom: 0; }
+.exp .xh { margin-bottom: 14px; }
+@media (max-width: 600px) { .exp h3 { font-size: 1.75rem; } }
 .exp .rl { color: var(--mute); margin-bottom: 14px; font-weight: 500; }
 .exp p { font-size: 17px; line-height: 1.5; }
 .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }

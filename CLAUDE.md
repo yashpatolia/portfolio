@@ -110,10 +110,10 @@ owner confirmed them as real.
 ```
 src/
   components/   Navbar, Hero, Experience, Projects, Gallery, Skills, Education, Contact, Footer
-  data/         site.ts, experience.ts, projects.ts, skills.ts, education.ts
+  data/         site.ts, experience.ts, projects.ts, skills.ts, skillIcons.ts, education.ts
   hooks/        useReveal.ts (reveal + spotlight)
   lib/          projectImages.ts (manifest loader)
   App.tsx  main.tsx  index.css
-public/         resume.pdf, favicon.svg, projects/
+public/         resume.pdf, favicon.svg, me.webp, projects/, logos/ (employer logos), skills/ (marquee icons)
 tools/capture/  dev-only image pipeline (own package.json)
 ```

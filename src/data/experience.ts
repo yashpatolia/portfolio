@@ -1,5 +1,7 @@
 export interface Role {
   company: string
+  /** Optional logo under public/logos, shown top right of the card. */
+  logo?: { src: string; width: number; height: number }
   role: string
   dateStart: string
   dateEnd: string
@@ -12,6 +14,7 @@ export interface Role {
 export const experience: Role[] = [
   {
     company: 'PointClickCare',
+    logo: { src: '/logos/pointclickcare.webp', width: 238, height: 238 },
     role: 'Software Engineer Intern',
     dateStart: 'May 2026',
     dateEnd: 'Aug 2026',
@@ -21,6 +24,7 @@ export const experience: Role[] = [
   },
   {
     company: 'PointClickCare',
+    logo: { src: '/logos/pointclickcare.webp', width: 238, height: 238 },
     role: 'Software Engineer Intern',
     dateStart: 'Sept 2025',
     dateEnd: 'Dec 2025',
@@ -30,6 +34,7 @@ export const experience: Role[] = [
   },
   {
     company: 'Jiyash Auto',
+    logo: { src: '/logos/jiyash-auto.webp', width: 288, height: 288 },
     role: 'Full-Stack Developer',
     dateStart: 'May 2025',
     dateEnd: 'Aug 2025',

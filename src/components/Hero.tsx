@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { site } from '../data/site'
 import { skillGroups } from '../data/skills'
+import { skillIcons } from '../data/skillIcons'
 
-const marquee = skillGroups.flatMap((g) => g.skills)
+const marquee = skillGroups.flatMap((g) => g.skills).filter((s) => skillIcons[s])
 
 const SPOTIFY_TRACK = '7B2ygRXyWZulEpO4G1CHZf' // BOY IN RED, Isaiah Rashad and SZA
 
@@ -13,6 +14,9 @@ const GithubIcon = () => (
 )
 const LinkedinIcon = () => (
   <svg viewBox="0 0 24 24" aria-hidden fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z" /></svg>
+)
+const RepeatIcon = () => (
+  <svg {...icon}><path d="M17 2l4 4-4 4" /><path d="M3 11V9a3 3 0 0 1 3-3h15" /><path d="M7 22l-4-4 4-4" /><path d="M21 13v2a3 3 0 0 1-3 3H3" /></svg>
 )
 const ResumeIcon = () => (
   <svg {...icon}><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" /><path d="M14 3v5h5M9 13h6M9 17h6" /></svg>
@@ -79,7 +83,7 @@ export default function Hero() {
       </div>
 
       <div className="c tune s4" style={{ '--i': 2 } as React.CSSProperties}>
-        <div className="lbl">On repeat</div>
+        <div className="lbl tl"><RepeatIcon />On repeat</div>
         <iframe
           title="BOY IN RED by Isaiah Rashad and SZA on Spotify"
           src={`https://open.spotify.com/embed/track/${SPOTIFY_TRACK}?theme=0`}
@@ -91,7 +95,7 @@ export default function Hero() {
       </div>
 
       <div className="c now s3" style={{ '--i': 3 } as React.CSSProperties}>
-        <div className="lbl">Now</div>
+        <div className="lbl tl"><span className="eq" aria-hidden><i /><i /><i /><i /></span>Now playing</div>
         <div>
           <h3>Study term</h3>
           <div>Back at McMaster after a PointClickCare internship, May to Aug 2026</div>
@@ -103,15 +107,23 @@ export default function Hero() {
         <div><Clock /></div>
       </div>
 
-      <div className="c s3" style={{ '--i': 5 } as React.CSSProperties}>
-        <a className="lk" href={site.github} target="_blank" rel="noreferrer"><span className="lt"><GithubIcon />GitHub</span><span>&#8599;</span></a>
-        <a className="lk" href={site.linkedin} target="_blank" rel="noreferrer"><span className="lt"><LinkedinIcon />LinkedIn</span><span>&#8599;</span></a>
+      <div className="c links s3" style={{ '--i': 5 } as React.CSSProperties}>
+        <div className="lbl">Socials</div>
+        <div className="lk-row">
+          <a className="lk" href={site.github} target="_blank" rel="noreferrer"><span className="lt"><GithubIcon />GitHub</span></a>
+          <a className="lk" href={site.linkedin} target="_blank" rel="noreferrer"><span className="lt"><LinkedinIcon />LinkedIn</span></a>
+        </div>
         <a className="lk p" href={site.resume} download><span className="lt"><ResumeIcon />Resume</span><span>&#8595;</span></a>
       </div>
 
       <div className="c mq s12" style={{ padding: '22px 0' }} aria-hidden>
         <div className="tr">
-          {doubled.map((s, i) => <span key={i}>{s}</span>)}
+          {doubled.map((s, i) => (
+            <span key={i}>
+              <i className="ico" style={{ '--ic': `url(/skills/${skillIcons[s]}.svg)` } as React.CSSProperties} />
+              {s}
+            </span>
+          ))}
         </div>
       </div>
     </div>

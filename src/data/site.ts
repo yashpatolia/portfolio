@@ -1,7 +1,7 @@
 export const site = {
   name: 'Yash Patolia',
   roles: ['Software Engineer', 'Backend Developer', 'Full-Stack Builder'],
-  bio: 'I build backend systems and the interfaces on top of them, from healthcare reporting pipelines to real-time chat bridges that move hundreds of thousands of messages.',
+  bio: 'I build reliable backend systems and the interfaces that sit on top of them. I love exploring new areas of tech and working on impactful things that people actually use. Away from the keyboard I love travelling, taking photos and working through a new show.',
   email: 'yashpatolia1@gmail.com',
   github: 'https://github.com/yashpatolia',
   linkedin: 'https://linkedin.com/in/yash-patolia',

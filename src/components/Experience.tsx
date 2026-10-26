@@ -7,9 +7,14 @@ export default function Experience() {
       <div className="bento">
         {experience.map((r, i) => (
           <article key={r.company + r.dateStart} className="c exp s4" style={{ '--i': i } as React.CSSProperties}>
-            <div className="lbl">{r.dateStart} to {r.dateEnd}</div>
-            <h3>{r.company}</h3>
-            <div className="rl">{r.role} &middot; {r.location}</div>
+            <div className="xh">
+              {r.logo && <img className="xlogo" src={r.logo.src} width={r.logo.width} height={r.logo.height} alt={`${r.company} logo`} loading="lazy" />}
+              <div className="xt">
+                <div className="lbl">{r.dateStart} to {r.dateEnd}</div>
+                <h3>{r.company}</h3>
+                <div className="rl">{r.role} &middot; {r.location}</div>
+              </div>
+            </div>
             <p>{r.summary}</p>
             <div className="tags">
               {r.stack.map((s) => <span key={s} className="tag">{s}</span>)}
